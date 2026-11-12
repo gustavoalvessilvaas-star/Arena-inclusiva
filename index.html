@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena Inclusiva — ONG Esporte Sem Limites</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Acessibilidade e Alto Contraste */
+        :root { --font-scale: 16px; }
+        html { font-size: var(--font-scale); scroll-behavior: smooth; }
+        
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+        }
+        
+        .skip-link:focus {
+            position: fixed; top: 10px; left: 10px; z-index: 9999;
+            background: #2563eb; color: #ffffff; padding: 15px;
+            border-radius: 8px; font-weight: bold; outline: 4px solid #ffff00;
+        }
+
+        body.high-contrast { background-color: #000000 !important; color: #ffffff !important; }
+        body.high-contrast .bg-white, body.high-contrast .bg-slate-50, body.high-contrast .bg-slate-900,
+        body.high-contrast .bg-blue-50, body.high-contrast .bg-indigo-50, body.high-contrast .bg-teal-50 {
+            background-color: #000000 !important; color: #ffffff !important; border-color: #ffff00 !important;
+        }
+        body.high-contrast .text-slate-900, body.high-contrast .text-slate-700, body.high-contrast .text-slate-600,
+        body.high-contrast .text-slate-500, body.high-contrast .text-blue-600, body.high-contrast .text-indigo-600 {
+            color: #ffff00 !important;
+        }
+        body.high-contrast button.bg-blue-600, body.high-contrast button.bg-indigo-600, body.high-contrast .bg-gradient-to-r {
+            background: #ffff00 !important; color: #000000 !important; border: 2px solid #ffffff !important;
+        }
+        body.high-contrast input, body.high-contrast select, body.high-contrast textarea {
+            background-color: #000000 !important; color: #ffff00 !important; border: 2px solid #ffff00 !important;
+        }
+        
+        /* Validação de Formulário (Requisito do Professor) */
+        .input-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+        }
+    </style>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Anunciador Dinâmico -->
+    <div id="a11y-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <a href="#app-content" class="sr-only skip-link">Pular para o conteúdo principal</a>
+
+    <!-- Barra de Acessibilidade -->
+    <div class="bg-slate-900 text-white text-xs py-2 px-4 border-b border-slate-800" role="toolbar" aria-label="Ferramentas de acessibilidade">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-2">
+                <i data-lucide="accessibility" aria-hidden="true" class="w-4 h-4 text-blue-400"></i>
+                <span class="font-medium">Acessibilidade — ONG Arena Inclusiva</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="toggleAudioReader()" id="btn-audio" aria-pressed="false" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded flex items-center gap-1.5 font-semibold focus-visible:ring-4 focus-visible:ring-blue-500 transition-colors">
+                    <i data-lucide="volume-2" aria-hidden="true" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span id="btn-audio-label">Ouvir Voz e Mouse</span>
+                </button>
+                <button onclick="readCurrentScreen()" aria-label="Repetir leitura" title="Repetir leitura da tela" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded focus-visible:ring-4 focus-visible:ring-blue-500">
+                    <i data-lucide="rotate-ccw" aria-hidden="true" class="w-3.5 h-3.5 text-slate-300"></i>
+                </button>
+                <span class="text-slate-600" aria-hidden="true">|</span>
+                <button onclick="adjustFont(-1)" aria-label="Diminuir fonte" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded font-bold focus-visible:ring-4 focus-visible:ring-blue-500">A-</button>
+                <button onclick="resetFont()" aria-label="Restaurar fonte" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded font-bold focus-visible:ring-4 focus-visible:ring-blue-500">A</button>
+                <button onclick="adjustFont(1)" aria-label="Aumentar fonte" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded font-bold focus-visible:ring-4 focus-visible:ring-blue-500">A+</button>
+                <span class="text-slate-600" aria-hidden="true">|</span>
+                <button onclick="toggleHighContrast()" id="btn-contrast" aria-pressed="false" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded flex items-center gap-1 font-medium focus-visible:ring-4 focus-visible:ring-blue-500">
+                    <i data-lucide="eye" aria-hidden="true" class="w-3.5 h-3.5 text-yellow-400"></i> Alto Contraste
+                </button>
+                <button onclick="toggleDarkMode()" id="btn-theme" aria-pressed="false" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded flex items-center gap-1 font-medium focus-visible:ring-4 focus-visible:ring-blue-500">
+                    <i data-lucide="moon" aria-hidden="true" class="w-3.5 h-3.5 text-blue-400"></i> Tema
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Principal -->
+    <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <button class="flex items-center gap-2.5 cursor-pointer text-left rounded-lg p-1 focus-visible:ring-4 focus-visible:ring-blue-500" onclick="navigate('home')" aria-label="Ir para a página inicial">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-teal-500 flex items-center justify-center text-white shadow-md">
+                    <i data-lucide="trophy" aria-hidden="true" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">ONG Arena Inclusiva</span>
+                    <span class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider -mt-1">Esporte Sem Limites</span>
+                </div>
+            </button>
+
+            <nav id="desktop-nav" aria-label="Navegação principal" class="hidden lg:flex items-center gap-4"></nav>
+
+            <button onclick="toggleMobileMenu()" id="btn-mobile-menu" aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menu" class="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:ring-4 focus-visible:ring-blue-500">
+                <i data-lucide="menu" aria-hidden="true" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <nav id="mobile-nav" aria-label="Navegação mobile" class="hidden lg:hidden bg-white dark:bg-slate-900 border-b border-slate-200 px-4 py-4 space-y-3"></nav>
+    </header>
+
+    <!-- Conteúdo Dinâmico (SPA - 10 Páginas) -->
+    <main id="app-content" tabindex="-1" class="flex-grow focus:outline-none"></main>
+
+    <!-- Modal Detalhado de Esportes -->
+    <div id="sport-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div id="sport-modal-content" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <!-- Injetado via JS -->
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i data-lucide="trophy" aria-hidden="true" class="w-5 h-5 text-blue-600"></i>
+                <span class="font-bold text-slate-800 dark:text-white">ONG Arena Inclusiva — 2026</span>
+            </div>
+            <div class="flex gap-4 flex-wrap justify-center">
+                <button onclick="navigate('about')" class="text-sm text-slate-500 hover:text-blue-600 font-semibold focus-visible:ring-4 focus-visible:ring-blue-500 px-1 rounded">Sobre Nós</button>
+                <button onclick="navigate('contact')" class="text-sm text-slate-500 hover:text-blue-600 font-semibold focus-visible:ring-4 focus-visible:ring-blue-500 px-1 rounded">Contato</button>
+                <button onclick="navigate('donate')" class="text-sm text-slate-500 hover:text-blue-600 font-semibold focus-visible:ring-4 focus-visible:ring-blue-500 px-1 rounded">Doações</button>
+            </div>
+            <p class="text-sm text-slate-500 text-center">Projeto Acadêmico • UNICID</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================================
+        // 1. BASE DE DADOS COMPLETA (10 Modalidades com Todos os Detalhes)
+        // ============================================================================
+        const SPORTS = [
+            {
+                id: 'basquete-cadeira', name: 'Basquete em Cadeira de Rodas', category: 'Coletivo', disability: ['fisica'], disabilityLabel: 'Deficiência Física', level: 'Todos os níveis', image: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Modalidade dinâmica disputada em quadra com cadeiras esportivas.',
+                history: 'Surgiu nos EUA em 1945, logo após a Segunda Guerra Mundial, para reabilitar soldados.',
+                howItWorks: 'Duas equipes de 5 jogadores competem. A cesta tem a mesma altura (3,05m) do basquete convencional.',
+                rules: 'O jogador deve quicar, passar ou arremessar a bola a cada dois impulsos dados na cadeira.',
+                equipment: 'Cadeiras de rodas com rodas cambadas (inclinadas) para evitar quedas laterais.',
+                adaptations: 'Quadra padrão de basquete totalmente acessível.',
+                benefits: 'Fortalecimento dos membros superiores e agilidade.'
+            },
+            {
+                id: 'volei-sentado', name: 'Vôlei Sentado', category: 'Coletivo', disability: ['fisica', 'multipla'], disabilityLabel: 'Física / Múltipla', level: 'Iniciante a Avançado', image: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Jogo rápido praticado com os atletas sentados no chão.',
+                history: 'Criado na Holanda em 1956 a partir do sitball alemão.',
+                howItWorks: 'Seis jogadores de cada lado em quadra menor (10m x 6m) e rede baixa.',
+                rules: 'É obrigatório manter o quadril no chão ao tocar na bola. Bloqueio de saque é permitido.',
+                equipment: 'Bola oficial de vôlei e uniformes que facilitam o deslizamento.',
+                adaptations: 'Piso totalmente liso para evitar lesões.',
+                benefits: 'Reflexos rápidos e fortalecimento do tronco.'
+            },
+            {
+                id: 'goalball', name: 'Goalball', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Deficiência Visual', level: 'Todos os níveis', image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Esporte exclusivo para cegos, guiado pelo som de guizos na bola.',
+                history: 'Inventado em 1946 por austríacos e alemães para reabilitar veteranos cegos.',
+                howItWorks: 'Equipes de 3 jogadores arremessam a bola rasteira para marcar gol.',
+                rules: 'Todos usam vendas opacas. A torcida deve ficar em silêncio absoluto.',
+                equipment: 'Bola de 1,25kg com guizos, vendas, joelheiras e cotoveleiras.',
+                adaptations: 'Linhas da quadra possuem barbante sob a fita para orientação tátil.',
+                benefits: 'Desenvolve acuidade auditiva e percepção espacial extrema.'
+            },
+            {
+                id: 'futebol-5', name: 'Futebol de 5', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Deficiência Visual', level: 'Iniciante a Avançado', image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Futebol com bola sonora e guia orientador atrás do gol.',
+                history: 'Desenvolvido na América Latina e integrado aos Jogos Paralímpicos em 2004.',
+                howItWorks: 'Disputado por 4 jogadores de linha cegos e 1 goleiro vidente.',
+                rules: 'Os atletas devem gritar "Voy!" ao buscar a bola para evitar choques.',
+                equipment: 'Bola com guizos internos, vendas oculares e caneleiras.',
+                adaptations: 'Paredes laterais (bandas) na quadra para a bola não sair.',
+                benefits: 'Autoconfiança, equilíbrio dinâmico e agilidade.'
+            },
+            {
+                id: 'bocha-paralimpica', name: 'Bocha Paralímpica', category: 'Individual', disability: ['fisica', 'multipla'], disabilityLabel: 'Física Severa', level: 'Todos os níveis', image: 'https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Esporte de precisão e estratégia para comprometimento motor severo.',
+                history: 'Inspirado na Grécia Antiga, tornou-se paralímpico em 1984.',
+                howItWorks: 'O objetivo é lançar bolas (azuis ou vermelhas) perto da bola alvo branca (jack).',
+                rules: 'Pode usar calhas e calheiros (assistentes) que agem apenas sob comando do atleta.',
+                equipment: 'Bochas de couro macio, calhas direcionais e ponteiras de cabeça.',
+                adaptations: 'Superfícies lisas e equipamentos totalmente customizados.',
+                benefits: 'Raciocínio lógico, estratégia e controle emocional.'
+            },
+            {
+                id: 'atletismo-adaptado', name: 'Atletismo Adaptado', category: 'Individual', disability: ['fisica', 'visual', 'intelectual'], disabilityLabel: 'Diversas', level: 'Todos os níveis', image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Corridas, saltos e arremessos adaptados para várias deficiências.',
+                history: 'Presente desde a primeira edição das Paralimpíadas em Roma (1960).',
+                howItWorks: 'Provas divididas por classes funcionais baseadas no grau da deficiência.',
+                rules: 'Atletas cegos correm com guias (ligados por cordinha). Cadeirantes usam cadeiras fixas para arremessos.',
+                equipment: 'Próteses de lâmina de carbono, cadeiras de corrida (racers) e cordas-guia.',
+                adaptations: 'Sinalizadores sonoros e bancos de fixação para arremessos.',
+                benefits: 'Melhora cardiovascular, potência e força global.'
+            },
+            {
+                id: 'natacao-adaptada', name: 'Natação Adaptada', category: 'Individual', disability: ['fisica', 'visual', 'intelectual', 'multipla'], disabilityLabel: 'Diversas', level: 'Todos os níveis', image: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Esporte completo de baixo impacto, proporcionando grande liberdade.',
+                history: 'Usado desde os anos 40 na reabilitação motora global.',
+                howItWorks: 'Provas nos estilos livre, costas, peito e borboleta.',
+                rules: 'Largada pode ser na água. Nadadores cegos são avisados da borda com um bastão (tapper).',
+                equipment: 'Maiôs/sungas, óculos e o "tapper" (bastão com ponta de espuma).',
+                adaptations: 'Elevadores hidráulicos nas piscinas para acesso de cadeirantes.',
+                benefits: 'Excelente capacidade cardiorrespiratória e alívio articular.'
+            },
+            {
+                id: 'parabadminton', name: 'Parabadminton', category: 'Individual', disability: ['fisica'], disabilityLabel: 'Deficiência Física', level: 'Iniciante a Avançado', image: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Esporte de raquete muito veloz praticado em pé ou em cadeira.',
+                history: 'Estreou oficialmente nos Jogos de Tóquio 2020.',
+                howItWorks: 'Fazer a peteca cair na quadra do adversário por cima da rede.',
+                rules: 'Cadeirantes jogam em meia quadra nas disputas individuais.',
+                equipment: 'Raquetes super leves, petecas (penas ou nylon) e cadeiras adaptadas.',
+                adaptations: 'Cadeiras de rodas com antitombo traseiro especial.',
+                benefits: 'Reflexos, agilidade mental e coordenação motora fina.'
+            },
+            {
+                id: 'tenis-cadeira', name: 'Tênis em Cadeira de Rodas', category: 'Individual', disability: ['fisica'], disabilityLabel: 'Deficiência Física', level: 'Iniciante a Avançado', image: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Tênis clássico adaptado com a famosa regra dos dois quiques.',
+                history: 'Criado nos EUA em 1976 por Brad Parks e hoje presente nos Grand Slams.',
+                howItWorks: 'Disputado nas mesmas quadras e raquetes do tênis olímpico.',
+                rules: 'O atleta pode deixar a bola quicar duas vezes antes de rebater (o primeiro quique obrigatoriamente na quadra).',
+                equipment: 'Cadeiras de rodas esportivas extremamente manobráveis e ágeis.',
+                adaptations: 'Portões largos e acessibilidade total ao redor das quadras.',
+                benefits: 'Potência nos golpes, pensamento rápido e resistência.'
+            },
+            {
+                id: 'judo-paralimpico', name: 'Judô Paralímpico', category: 'Individual', disability: ['visual'], disabilityLabel: 'Deficiência Visual', level: 'Todos os níveis', image: 'https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=80&w=800',
+                shortDesc: 'Arte marcial onde o combate inicia com contato no quimono.',
+                history: 'Estreou em Seul 1988 e é o esporte paralímpico de luta mais tradicional.',
+                howItWorks: 'O objetivo é derrubar o adversário de costas no tatame (Ippon) ou imobilizá-lo.',
+                rules: 'A luta começa com ambos já segurando o quimono do outro (Kumi-kata).',
+                equipment: 'Quimono reforçado e tatames macios.',
+                adaptations: 'Tatames com textura áspera na borda avisam que a área de luta está acabando.',
+                benefits: 'Defesa pessoal, força isométrica e muita disciplina.'
+            }
+        ];
+
+        // ============================================================================
+        // 2. SISTEMA SPA E ROTAS (AS 10 PÁGINAS EXIGIDAS)
+        // ============================================================================
+        function loadStoredUser() {
+            const raw = localStorage.getItem('arena_user');
+            return raw ? JSON.parse(raw) : null;
+        }
+
+        let state = {
+            route: 'home',
+            user: loadStoredUser(),
+            favorites: JSON.parse(localStorage.getItem('arena_favs')) || [],
+            fontSize: parseInt(localStorage.getItem('arena_font')) || 16,
+            darkMode: localStorage.getItem('arena_dark') === 'true',
+            highContrast: localStorage.getItem('arena_contrast') === 'true',
+            quizStep: 1,
+            quizData: { name: '', email: '', password: '', age: '', hasDisability: '', disabilityType: '', accessibilityNeeds: '', goals: ['Melhorar a saúde'], interest: 'Todos' }
+        };
+
+        const ROUTE_NAMES = {
+            home: '1. Início', about: '2. Sobre a ONG', news: '3. Notícias', catalog: '4. Catálogo',
+            contact: '5. Contato', donate: '6. Doações', login: '7. Login', register: '8. Cadastro',
+            recommendations: '9. Recomendações', profile: '10. Meu Perfil'
+        };
+
+        function navigate(route) {
+            state.route = route;
+            document.getElementById('mobile-nav').classList.add('hidden');
+            renderNav();
+            renderMain();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            announceToScreenReader(`Navegou para a página: ${ROUTE_NAMES[route]}`);
+            lucide.createIcons();
+            readCurrentScreen(); // Lê automaticamente o topo da nova página se a voz estiver ativa
+        }
+
+        function renderNav() {
+            const d = document.getElementById('desktop-nav');
+            const m = document.getElementById('mobile-nav');
+            
+            const btnClass = (r) => `text-sm font-semibold px-2 py-1 rounded focus-visible:ring-4 focus-visible:ring-blue-500 transition ${state.route === r ? 'text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:text-blue-600'}`;
+
+            let links = `
+                <button onclick="navigate('home')" class="${btnClass('home')}">Início</button>
+                <button onclick="navigate('about')" class="${btnClass('about')}">Sobre Nós</button>
+                <button onclick="navigate('news')" class="${btnClass('news')}">Notícias</button>
+                <button onclick="navigate('catalog')" class="${btnClass('catalog')}">Catálogo</button>
+                <button onclick="navigate('contact')" class="${btnClass('contact')}">Contato</button>
+                <button onclick="navigate('donate')" class="${btnClass('donate')}">Doar</button>
+            `;
+
+            if (state.user) {
+                links += `
+                    <button onclick="navigate('recommendations')" class="${btnClass('recommendations')}">Recomendações</button>
+                    <button onclick="navigate('profile')" class="${btnClass('profile')}">Meu Perfil</button>
+                    <button aria-label="Sair da conta" onclick="logout()" class="ml-2 px-4 py-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 text-sm font-bold transition focus-visible:ring-4 focus-visible:ring-red-500">Sair</button>
+                `;
+            } else {
+                links += `
+                    <button onclick="navigate('login')" class="${btnClass('login')}">Entrar</button>
+                    <button onclick="navigate('register')" class="ml-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-md transition focus-visible:ring-4 focus-visible:ring-blue-500">Cadastro</button>
+                `;
+            }
+
+            d.innerHTML = links;
+            m.innerHTML = `<div class="flex flex-col space-y-2">${links}</div>`;
+        }
+
+        function logout() {
+            state.user = null;
+            localStorage.removeItem('arena_user');
+            navigate('home');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-nav').classList.toggle('hidden');
+        }
+
+        // ============================================================================
+        // 3. VALIDAÇÕES JS EXIGIDAS (Com bordas vermelhas e mensagens)
+        // ============================================================================
+        function setFieldError(id, msg) {
+            const el = document.getElementById(id);
+            const err = document.getElementById(id + '-error');
+            el.classList.add('input-error');
+            el.setAttribute('aria-invalid', 'true');
+            err.textContent = msg;
+            err.classList.remove('hidden');
+        }
+
+        function clearFieldError(id) {
+            const el = document.getElementById(id);
+            const err = document.getElementById(id + '-error');
+            el.classList.remove('input-error');
+            el.removeAttribute('aria-invalid');
+            err.classList.add('hidden');
+        }
+
+        function validateLogin(e) {
+            e.preventDefault();
+            let valid = true;
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value.trim();
+
+            if (!email.includes('@') || !email.includes('.')) {
+                setFieldError('login-email', 'Informe um e-mail válido.'); valid = false;
+            } else { clearFieldError('login-email'); }
+
+            if (pass.length < 6) {
+                setFieldError('login-pass', 'A senha precisa ter no mínimo 6 caracteres.'); valid = false;
+            } else { clearFieldError('login-pass'); }
+
+            if (!valid) {
+                announceToScreenReader('Erros no formulário. Verifique os campos.'); return;
+            }
+
+            state.user = { name: email.split('@')[0], email, goals: ['Melhorar a saúde'], interest: 'Todos' };
+            localStorage.setItem('arena_user', JSON.stringify(state.user));
+            navigate('recommendations');
+        }
+
+        function validateContact(e) {
+            e.preventDefault();
+            let valid = true;
+            const n = document.getElementById('cont-nome').value.trim();
+            const em = document.getElementById('cont-email').value.trim();
+            const msg = document.getElementById('cont-msg').value.trim();
+
+            if (n.length < 3) { setFieldError('cont-nome', 'O nome é obrigatório.'); valid = false; } else { clearFieldError('cont-nome'); }
+            if (!em.includes('@')) { setFieldError('cont-email', 'E-mail inválido.'); valid = false; } else { clearFieldError('cont-email'); }
+            if (msg.length < 10) { setFieldError('cont-msg', 'A mensagem deve ter pelo menos 10 caracteres.'); valid = false; } else { clearFieldError('cont-msg'); }
+
+            if (!valid) { announceToScreenReader('Erros no formulário de contato.'); return; }
+
+            alert('Sua mensagem foi enviada à ONG com sucesso! Obrigado.');
+            navigate('home');
+        }
+
+        // ============================================================================
+        // 4. RENDERIZAÇÃO DAS 10 PÁGINAS (Views)
+        // ============================================================================
+        function renderMain() {
+            const main = document.getElementById('app-content');
+            switch (state.route) {
+                case 'home': main.innerHTML = viewHome(); break;
+                case 'about': main.innerHTML = viewAbout(); break;
+                case 'news': main.innerHTML = viewNews(); break;
+                case 'catalog': main.innerHTML = viewCatalog(); break;
+                case 'contact': main.innerHTML = viewContact(); break;
+                case 'donate': main.innerHTML = viewDonate(); break;
+                case 'login': main.innerHTML = viewLogin(); break;
+                case 'register': main.innerHTML = viewRegister(); break;
+                case 'recommendations': main.innerHTML = state.user ? viewRecommendations() : viewLogin(); break;
+                case 'profile': main.innerHTML = state.user ? viewProfile() : viewLogin(); break;
+            }
+        }
+
+        // 1. INÍCIO
+        function viewHome() {
+            return `
+                <section class="bg-gradient-to-br from-blue-50 to-teal-50 dark:from-slate-900 py-20 px-4 text-center">
+                    <div class="max-w-4xl mx-auto">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase mb-6 shadow-sm"><i data-lucide="award" class="inline w-4 h-4 mb-0.5"></i> ONG Oficial - Projeto Acadêmico</span>
+                        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight text-slate-900 dark:text-white">Esporte Sem Limites</h1>
+                        <p class="text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">Conectando pessoas com ou sem deficiência ao seu esporte ideal através da tecnologia.</p>
+                        <button aria-label="Botão Faça Parte do Projeto" onclick="navigate('register')" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/30 focus-visible:ring-4 focus-visible:ring-yellow-400 transition-transform transform hover:-translate-y-1">Faça Parte do Projeto</button>
+                    </div>
+                </section>
+                <section class="max-w-7xl mx-auto px-4 py-16">
+                    <h2 class="text-2xl font-bold mb-8 text-center">Como Funciona a Plataforma</h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+                            <i data-lucide="file-question" class="w-12 h-12 text-blue-500 mx-auto mb-4"></i>
+                            <h3 class="font-bold text-lg mb-2">1. Responda ao Quiz</h3>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">Fale sobre suas características, nível de experiência e objetivos.</p>
+                        </div>
+                        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+                            <i data-lucide="cpu" class="w-12 h-12 text-teal-500 mx-auto mb-4"></i>
+                            <h3 class="font-bold text-lg mb-2">2. Análise da ONG</h3>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">Nosso sistema processa as melhores adaptações esportivas para você.</p>
+                        </div>
+                        <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
+                            <i data-lucide="trophy" class="w-12 h-12 text-indigo-500 mx-auto mb-4"></i>
+                            <h3 class="font-bold text-lg mb-2">3. Descubra Seu Esporte</h3>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">Receba recomendações focadas na sua saúde e bem-estar físico.</p>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        // 2. SOBRE A ONG (Com Vídeo)
+        function viewAbout() {
+            return `
+                <div class="max-w-5xl mx-auto px-4 py-12">
+                    <h1 class="text-4xl font-extrabold mb-6">Sobre a ONG Arena Inclusiva</h1>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-6">Nascemos em 2026 como um projeto do curso de Informática da UNICID. Nossa meta é criar uma ponte tecnológica entre pessoas com deficiência e as federações de esportes adaptados.</p>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-10">Acreditamos no esporte como ferramenta de inclusão social, reabilitação e independência.</p>
+                    
+                    <h2 class="text-2xl font-bold mb-4">O Poder do Esporte Paralímpico</h2>
+                    <div class="w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-black">
+                        <!-- IFRAME YOUTUBE - Requisito Multimídia -->
+                        <iframe style="width:100%; height:500px;" src="https://www.youtube.com/embed/S2_x1QdE4mY" title="Vídeo Inspiracional - Comitê Paralímpico Brasileiro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. NOTÍCIAS E COMPETIÇÕES
+        function viewNews() {
+            return `
+                <div class="max-w-6xl mx-auto px-4 py-12">
+                    <h1 class="text-4xl font-extrabold mb-2">Notícias e Competições</h1>
+                    <p class="text-slate-600 dark:text-slate-400 mb-10">Fique por dentro das seletivas e campeonatos apoiados pela nossa ONG.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <article class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition">
+                            <span class="text-xs font-bold px-2 py-1 bg-teal-100 text-teal-800 rounded uppercase">Competição Nacional • 12 Nov 2026</span>
+                            <h2 class="text-2xl font-bold mt-4 mb-3">Abertas inscrições para o Brasileiro de Basquete CR</h2>
+                            <p class="text-slate-600 dark:text-slate-400 mb-4">Equipes de todo o Brasil podem se inscrever na 1ª divisão do campeonato nacional que ocorrerá no CT Paralímpico em São Paulo. A ONG fornecerá suporte logístico para 3 equipes estreantes.</p>
+                            <button aria-label="Ler notícia completa sobre Basquete" class="text-blue-600 font-bold hover:underline">Ler mais completa...</button>
+                        </article>
+
+                        <article class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition">
+                            <span class="text-xs font-bold px-2 py-1 bg-red-100 text-red-800 rounded uppercase">Urgente / Seletiva • 10 Nov 2026</span>
+                            <h2 class="text-2xl font-bold mt-4 mb-3">Seletiva de Goalball: Base de Novos Atletas</h2>
+                            <p class="text-slate-600 dark:text-slate-400 mb-4">A Arena Inclusiva realizará testes práticos neste fim de semana para jovens de 12 a 18 anos com deficiência visual (B1, B2 e B3). Não é necessária experiência prévia com o esporte.</p>
+                            <button aria-label="Ler notícia completa sobre Goalball" class="text-blue-600 font-bold hover:underline">Ler mais completa...</button>
+                        </article>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 4. CATÁLOGO COM FILTROS
+        function viewCatalog() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-12">
+                    <div class="mb-8">
+                        <h1 class="text-3xl font-extrabold">Catálogo de Esportes</h1>
+                        <p class="text-slate-600 dark:text-slate-400 mt-1">Conheça todas as modalidades catalogadas pela ONG.</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-1 relative">
+                            <label for="cat-search" class="sr-only">Pesquisar esporte</label>
+                            <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5"></i>
+                            <input type="text" id="cat-search" oninput="applyCatalogFilters()" placeholder="Buscar esporte..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none focus:ring-4 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="cat-dis" class="sr-only">Filtrar por deficiência</label>
+                            <select id="cat-dis" onchange="applyCatalogFilters()" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none focus:ring-4 focus:ring-blue-500">
+                                <option value="">Todas as Deficiências</option>
+                                <option value="fisica">Física ou Motora</option>
+                                <option value="visual">Visual</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="cat-type" class="sr-only">Filtrar categoria</label>
+                            <select id="cat-type" onchange="applyCatalogFilters()" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none focus:ring-4 focus:ring-blue-500">
+                                <option value="">Qualquer Categoria</option>
+                                <option value="Coletivo">Coletivos</option>
+                                <option value="Individual">Individuais</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="catalog-results" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        ${SPORTS.map(s => createSportCard(s)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function applyCatalogFilters() {
+            const term = document.getElementById('cat-search').value.toLowerCase();
+            const dis = document.getElementById('cat-dis').value;
+            const type = document.getElementById('cat-type').value;
+
+            const filtered = SPORTS.filter(s => {
+                return (s.name.toLowerCase().includes(term) || s.shortDesc.toLowerCase().includes(term))
+                    && (!dis || s.disability.includes(dis))
+                    && (!type || s.category === type);
+            });
+
+            const container = document.getElementById('catalog-results');
+            if (filtered.length === 0) {
+                container.innerHTML = `<p class="col-span-full text-center text-slate-500 py-10">Nenhum esporte encontrado.</p>`;
+                announceToScreenReader('Nenhum esporte encontrado com esses filtros.');
+            } else {
+                container.innerHTML = filtered.map(s => createSportCard(s)).join('');
+                announceToScreenReader(`${filtered.length} esportes exibidos.`);
+            }
+            lucide.createIcons();
+        }
+
+        // 5. CONTATO / VOLUNTARIADO (VALIDAÇÃO)
+        function viewContact() {
+            return `
+                <div class="max-w-lg mx-auto px-4 py-12">
+                    <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl">
+                        <h1 class="text-3xl font-extrabold mb-2">Contato / Voluntário</h1>
+                        <p class="text-slate-500 text-sm mb-6">Quer atuar na ONG? Preencha os campos abaixo.</p>
+                        
+                        <form onsubmit="validateContact(event)" novalidate class="space-y-4">
+                            <div>
+                                <label for="cont-nome" class="block font-bold text-sm mb-1">Nome Completo</label>
+                                <input type="text" id="cont-nome" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="cont-nome-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <div>
+                                <label for="cont-email" class="block font-bold text-sm mb-1">E-mail</label>
+                                <input type="email" id="cont-email" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="cont-email-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <div>
+                                <label for="cont-msg" class="block font-bold text-sm mb-1">Motivação / Mensagem</label>
+                                <textarea id="cont-msg" rows="4" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none"></textarea>
+                                <span id="cont-msg-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <button type="submit" aria-label="Botão enviar mensagem de contato" class="w-full py-3.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl mt-4 focus-visible:ring-4 focus-visible:ring-yellow-400">Enviar Mensagem</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 6. DOAÇÕES / APOIO
+        function viewDonate() {
+            return `
+                <div class="max-w-3xl mx-auto px-4 py-12 text-center">
+                    <h1 class="text-4xl font-extrabold mb-4 text-blue-600">Apoie a ONG Arena Inclusiva</h1>
+                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-8">Sua doação garante a manutenção da plataforma e patrocina atletas amadores na compra de cadeiras de rodas e materiais esportivos.</p>
+                    
+                    <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl inline-block">
+                        <i data-lucide="qr-code" aria-hidden="true" class="w-40 h-40 mx-auto text-slate-800 dark:text-white mb-4"></i>
+                        <p class="font-bold text-xl mb-1">Chave PIX (E-mail):</p>
+                        <p class="text-slate-500 select-all mb-4 bg-slate-100 dark:bg-slate-800 p-3 rounded-lg border border-slate-300 dark:border-slate-600">doacoes@arenainclusiva.ong.br</p>
+                        <button onclick="alert('Chave PIX copiada com sucesso!');" aria-label="Copiar chave PIX" class="px-8 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 focus-visible:ring-4 focus-visible:ring-yellow-400">Copiar Chave</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 7. LOGIN (VALIDAÇÃO)
+        function viewLogin() {
+            return `
+                <div class="max-w-md mx-auto my-16 px-4">
+                    <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl">
+                        <div class="text-center mb-8">
+                            <i data-lucide="log-in" aria-hidden="true" class="w-10 h-10 text-blue-600 mx-auto mb-2"></i>
+                            <h2 class="text-2xl font-extrabold">Entrar na Plataforma</h2>
+                        </div>
+                        <form onsubmit="validateLogin(event)" novalidate class="space-y-4">
+                            <div>
+                                <label for="login-email" class="block font-bold text-sm mb-1">E-mail</label>
+                                <input type="email" id="login-email" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="login-email-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <div>
+                                <label for="login-pass" class="block font-bold text-sm mb-1">Senha</label>
+                                <input type="password" id="login-pass" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="login-pass-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <button type="submit" aria-label="Botão de Entrar" class="w-full py-3.5 bg-blue-600 text-white font-bold rounded-xl mt-4 focus-visible:ring-4 focus-visible:ring-yellow-400">Entrar</button>
+                        </form>
+                        <p class="text-center text-sm text-slate-500 mt-6">Não possui conta? <button onclick="navigate('register')" class="text-blue-600 font-bold hover:underline">Cadastre-se</button></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 8. CADASTRO / QUIZ (VALIDAÇÃO NA ETAPA 1 E 2)
+        function viewRegister() {
+            const step = state.quizStep;
+            const d = state.quizData;
+            const pct = Math.round((step / 3) * 100);
+
+            return `
+                <div class="max-w-2xl mx-auto my-12 px-4">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl p-8 shadow-xl">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-blue-600 uppercase">Etapa ${step} de 3</span>
+                            <span class="text-xs font-bold text-slate-500">${pct}% concluído</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full mb-8" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="h-full bg-blue-600 transition-all duration-300 rounded-full" style="width: ${pct}%"></div>
+                        </div>
+
+                        ${step === 1 ? `
+                            <h2 class="text-2xl font-extrabold mb-6">Crie sua Conta e Perfil</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="q-name" class="block text-sm font-bold mb-1">Nome completo</label>
+                                    <input type="text" id="q-name" value="${d.name}" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
+                                    <span id="q-name-error" class="text-red-500 text-xs font-bold hidden" aria-live="assertive"></span>
+                                </div>
+                                <div>
+                                    <label for="q-email" class="block text-sm font-bold mb-1">E-mail</label>
+                                    <input type="email" id="q-email" value="${d.email}" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
+                                    <span id="q-email-error" class="text-red-500 text-xs font-bold hidden" aria-live="assertive"></span>
+                                </div>
+                                <button onclick="validateQuizStep1()" class="w-full py-3.5 rounded-xl bg-blue-600 text-white font-bold mt-4 focus-visible:ring-4 focus-visible:ring-yellow-400">Continuar →</button>
+                            </div>
+                        ` : ''}
+
+                        ${step === 2 ? `
+                            <h2 class="text-2xl font-extrabold mb-6">Acessibilidade</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="q-hasDis" class="block text-sm font-bold mb-1">Possui alguma deficiência?</label>
+                                    <select id="q-hasDis" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
+                                        <option value="">Selecione...</option>
+                                        <option value="Sim" ${d.hasDisability==='Sim'?'selected':''}>Sim</option>
+                                        <option value="Não" ${d.hasDisability==='Não'?'selected':''}>Não</option>
+                                    </select>
+                                    <span id="q-hasDis-error" class="text-red-500 text-xs font-bold hidden" aria-live="assertive"></span>
+                                </div>
+                                <div>
+                                    <label for="q-disType" class="block text-sm font-bold mb-1">Se sim, qual categoria principal?</label>
+                                    <select id="q-disType" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
+                                        <option value="fisica">Física ou Motora</option>
+                                        <option value="visual">Visual</option>
+                                        <option value="intelectual">Intelectual</option>
+                                        <option value="nenhuma">Não se aplica</option>
+                                    </select>
+                                </div>
+                                <div class="flex gap-3 pt-4">
+                                    <button onclick="prevStep(1)" class="w-1/3 py-3 rounded-xl border border-slate-300 dark:border-slate-600 font-bold focus-visible:ring-4 focus-visible:ring-blue-500">Voltar</button>
+                                    <button onclick="validateQuizStep2()" class="w-2/3 py-3 rounded-xl bg-blue-600 text-white font-bold focus-visible:ring-4 focus-visible:ring-yellow-400">Continuar →</button>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${step === 3 ? `
+                            <h2 class="text-2xl font-extrabold mb-6">Objetivos Esportivos</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="q-int" class="block text-sm font-bold mb-1">Qual tipo de esporte prefere?</label>
+                                    <select id="q-int" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800">
+                                        <option value="Coletivo" ${d.interest==='Coletivo'?'selected':''}>Esportes em Equipe (Coletivos)</option>
+                                        <option value="Individual" ${d.interest==='Individual'?'selected':''}>Esportes Individuais</option>
+                                        <option value="Todos" ${d.interest==='Todos'?'selected':''}>Qualquer um</option>
+                                    </select>
+                                </div>
+                                <div class="flex gap-3 pt-4">
+                                    <button onclick="prevStep(2)" class="w-1/3 py-3.5 rounded-xl border border-slate-300 dark:border-slate-600 font-bold focus-visible:ring-4 focus-visible:ring-blue-500">Voltar</button>
+                                    <button onclick="finishWizard()" class="w-2/3 py-3.5 rounded-xl bg-emerald-600 text-white font-bold focus-visible:ring-4 focus-visible:ring-yellow-400">Finalizar Cadastro</button>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function prevStep(t) { state.quizStep = t; renderMain(); }
+
+        function validateQuizStep1() {
+            let valid = true;
+            const n = document.getElementById('q-name').value.trim();
+            const em = document.getElementById('q-email').value.trim();
+
+            if(n.length < 2) { setFieldError('q-name', 'Nome é obrigatório.'); valid = false; } else { clearFieldError('q-name'); }
+            if(!em.includes('@')) { setFieldError('q-email', 'E-mail inválido.'); valid = false; } else { clearFieldError('q-email'); }
+            
+            if(valid) {
+                state.quizData.name = n; state.quizData.email = em;
+                state.quizStep = 2; renderMain();
+            } else { announceToScreenReader('Erros no formulário.'); }
+        }
+
+        function validateQuizStep2() {
+            const dis = document.getElementById('q-hasDis').value;
+            if(!dis) { setFieldError('q-hasDis', 'Por favor, selecione uma opção.'); announceToScreenReader('Erro: selecione se possui deficiência.'); return; }
+            clearFieldError('q-hasDis');
+            
+            state.quizData.hasDisability = dis;
+            state.quizData.disabilityType = document.getElementById('q-disType').value;
+            state.quizStep = 3; renderMain();
+        }
+
+        function finishWizard() {
+            state.quizData.interest = document.getElementById('q-int').value;
+            state.user = { ...state.quizData };
+            localStorage.setItem('arena_user', JSON.stringify(state.user));
+            state.quizStep = 1;
+            navigate('recommendations');
+        }
+
+        // 9. RECOMENDAÇÕES INTELIGENTES
+        function getRecommendations() {
+            const u = state.user;
+            return SPORTS.map(sport => {
+                let score = 45;
+                if (u.hasDisability === 'Sim' && u.disabilityType) {
+                    if (sport.disability.includes(u.disabilityType)) score += 35;
+                    else score += 10;
+                } else score += 25;
+                
+                if (u.interest && u.interest !== 'Todos') {
+                    if (sport.category === u.interest) score += 15;
+                } else score += 10;
+                return { ...sport, score: Math.min(score + 5, 98) };
+            }).sort((a, b) => b.score - a.score);
+        }
+
+        function viewRecommendations() {
+            const recs = getRecommendations();
+            return `
+                <div class="max-w-7xl mx-auto px-4 py-12">
+                    <div class="bg-blue-600 rounded-3xl p-8 text-white shadow-xl mb-10">
+                        <h1 class="text-3xl font-extrabold">Recomendações para ${state.user.name}</h1>
+                        <p class="mt-2 opacity-90">Algoritmo da ONG calculou as modalidades com maior afinidade para o seu perfil.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        ${recs.map(s => createSportCard(s, true)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 10. MEU PERFIL E FAVORITOS
+        function viewProfile() {
+            const u = state.user;
+            const favList = SPORTS.filter(s => state.favorites.includes(s.id));
+            return `
+                <div class="max-w-6xl mx-auto px-4 py-12">
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-700 shadow-sm mb-8 flex flex-col md:flex-row justify-between items-center">
+                        <div>
+                            <h1 class="text-3xl font-extrabold">${u.name}</h1>
+                            <p class="text-slate-500">${u.email}</p>
+                        </div>
+                        <button onclick="state.quizStep=1; navigate('register')" class="mt-4 md:mt-0 px-4 py-2 bg-blue-100 text-blue-700 font-bold rounded-xl focus-visible:ring-4 focus-visible:ring-blue-500">Refazer Questionário</button>
+                    </div>
+                    <h2 class="text-2xl font-extrabold mb-6">Meus Esportes Favoritos</h2>
+                    ${favList.length > 0 ? `<div class="grid grid-cols-1 md:grid-cols-3 gap-6">${favList.map(s => createSportCard(s)).join('')}</div>` : `<p class="text-slate-500 p-8 border border-dashed border-slate-300 rounded-xl text-center">Você ainda não favoritou nenhuma modalidade. Clique no coração no catálogo!</p>`}
+                </div>
+            `;
+        }
+
+        // ============================================================================
+        // COMPONENTES: CARDS, FAVORITOS E MODAL DETALHADO (DOM INTERACTION)
+        // ============================================================================
+        function createSportCard(sport, isRec = false) {
+            const isFav = state.favorites.includes(sport.id);
+            return `
+                <article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden flex flex-col hover:shadow-xl transition relative">
+                    <img src="${sport.image}" alt="Foto ilustrativa de ${sport.name}" class="w-full h-48 object-cover bg-slate-200">
+                    <button onclick="toggleFav('${sport.id}')" aria-pressed="${isFav}" aria-label="${isFav?'Remover':'Adicionar'} ${sport.name} aos favoritos" class="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow focus-visible:ring-4 focus-visible:ring-blue-500">
+                        <i data-lucide="heart" class="w-5 h-5 ${isFav?'fill-red-500 text-red-500':'text-slate-500'}"></i>
+                    </button>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <span class="text-xs font-bold text-teal-600 mb-1">${sport.category} • ${sport.disabilityLabel}</span>
+                        <h3 class="text-xl font-extrabold mb-2">${sport.name}</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-4 flex-grow">${sport.shortDesc}</p>
+                        ${isRec ? `<div class="mb-4 bg-emerald-50 text-emerald-800 text-xs font-bold px-3 py-2 rounded">Compatibilidade: ${sport.score}%</div>` : ''}
+                        <button aria-label="Abrir detalhes de ${sport.name}" onclick="openSportModal('${sport.id}')" class="w-full py-3 bg-slate-100 hover:bg-blue-600 hover:text-white dark:bg-slate-800 dark:hover:bg-blue-600 text-slate-800 dark:text-white font-bold rounded-xl transition focus-visible:ring-4 focus-visible:ring-blue-500">Ver Detalhes</button>
+                    </div>
+                </article>
+            `;
+        }
+
+        function toggleFav(id) {
+            if (state.favorites.includes(id)) { state.favorites = state.favorites.filter(f => f !== id); } 
+            else { state.favorites.push(id); }
+            localStorage.setItem('arena_favs', JSON.stringify(state.favorites));
+            renderMain();
+            announceToScreenReader('Lista de favoritos atualizada.');
+        }
+
+        let lastFocus = null;
+        function openSportModal(id) {
+            const s = SPORTS.find(x => x.id === id);
+            if (!s) return;
+            lastFocus = document.activeElement;
+            const modal = document.getElementById('sport-modal');
+            const content = document.getElementById('sport-modal-content');
+            
+            content.innerHTML = `
+                <div class="relative h-64">
+                    <img src="${s.image}" alt="" aria-hidden="true" class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4 flex gap-2">
+                        <button onclick="closeSportModal()" id="btn-close-modal" aria-label="Fechar janela" class="w-10 h-10 rounded-full bg-slate-900/80 text-white flex items-center justify-center hover:bg-black focus-visible:ring-4 focus-visible:ring-yellow-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    </div>
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 p-6 text-white">
+                        <h2 id="modal-title" class="text-3xl font-extrabold">${s.name}</h2>
+                    </div>
+                </div>
+                <div class="p-6 space-y-6 text-sm">
+                    <p><strong>História:</strong> ${s.history}</p>
+                    <p><strong>Como Funciona:</strong> ${s.howItWorks}</p>
+                    <p><strong>Regras Básicas:</strong> ${s.rules}</p>
+                    <p><strong>Equipamentos:</strong> ${s.equipment}</p>
+                    <p><strong>Adaptações da ONG:</strong> ${s.adaptations}</p>
+                    <div class="p-4 bg-teal-50 dark:bg-teal-900/20 text-teal-900 dark:text-teal-100 rounded-xl"><strong>Benefícios para Saúde:</strong> ${s.benefits}</div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+            document.getElementById('btn-close-modal').focus();
+            announceToScreenReader(`Modal aberto para ${s.name}`);
+            
+            // TTS lê o modal automaticamente se estiver ativado
+            speakText(`Você abriu os detalhes de ${s.name}. História: ${s.history}. Funcionamento: ${s.howItWorks}`);
+        }
+
+        function closeSportModal() {
+            document.getElementById('sport-modal').classList.add('hidden');
+            if (synth) synth.cancel();
+            announceToScreenReader('Modal fechado.');
+            if (lastFocus) lastFocus.focus();
+        }
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSportModal(); });
+
+        // ============================================================================
+        // ENGINE DE VOZ COM LEITURA DO MOUSE (HOVER TTS)
+        // ============================================================================
+        let isAudioActive = false;
+        const synth = window.speechSynthesis;
+        let hoverTimeout = null;
+        let lastHoveredElement = null;
+
+        function speakText(text) {
+            if (!synth || !text) return;
+            synth.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'pt-BR';
+            utterance.rate = 1.05;
+            synth.speak(utterance);
+        }
+
+        function toggleAudioReader() {
+            isAudioActive = !isAudioActive;
+            const btn = document.getElementById('btn-audio');
+            const label = document.getElementById('btn-audio-label');
+            if (isAudioActive) {
+                btn.setAttribute('aria-pressed', 'true');
+                btn.classList.add('bg-emerald-600', 'text-white');
+                if (label) label.textContent = 'Voz Ativa';
+                announceToScreenReader('Motor de voz e mouse ativado.');
+                readCurrentScreen();
+            } else {
+                btn.setAttribute('aria-pressed', 'false');
+                btn.classList.remove('bg-emerald-600', 'text-white');
+                if (label) label.textContent = 'Ouvir Voz e Mouse';
+                synth.cancel();
+                announceToScreenReader('Voz desativada.');
+            }
+        }
+        function repeatAudio() { readCurrentScreen(); }
+        function readCurrentScreen() {
+            if (!isAudioActive) return;
+            setTimeout(() => {
+                const el = document.getElementById('app-content');
+                if (el) speakText(el.innerText.trim());
+            }, 300);
+        }
+        function announceToScreenReader(msg) {
+            const a = document.getElementById('a11y-announcer');
+            if (a) { a.textContent = msg; setTimeout(() => a.textContent = '', 3000); }
+        }
+
+        // LÓGICA DE HOVER DO MOUSE (Lê elementos interativos e formulários)
+        document.addEventListener('mouseover', (e) => {
+            if (!isAudioActive || !synth) return;
+            // Intercepta links, botões, parágrafos, inputs, etc.
+            const target = e.target.closest('button, a, h1, h2, h3, h4, p, label, img, input, textarea, select, span, article');
+            if (!target || target === lastHoveredElement) return;
+            lastHoveredElement = target;
+
+            // Prioriza ARIA-LABEL ou ALT (imagens)
+            let txt = target.getAttribute('aria-label') || target.alt || target.title;
+            
+            if (!txt) {
+                if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) {
+                    // Pega o label associado ao campo para fazer sentido sonoro
+                    const label = document.querySelector(`label[for="${target.id}"]`);
+                    txt = "Campo de formulário: " + (label ? label.innerText : "") + ". " + (target.placeholder || "");
+                } else {
+                    txt = target.innerText || target.textContent;
+                }
+            }
+            if (txt) {
+                clearTimeout(hoverTimeout);
+                // Aguarda meio segundo para não poluir caso o mouse passe rápido
+                hoverTimeout = setTimeout(() => speakText(txt.replace(/→|←/g, '').trim()), 500);
+            }
+        });
+        document.addEventListener('mouseout', (e) => {
+            const target = e.target.closest('button, a, h1, p, label, img, input, textarea, select, span, article');
+            if (!target) return;
+            clearTimeout(hoverTimeout);
+            lastHoveredElement = null;
+        });
+        window.addEventListener('beforeunload', () => { if (synth) synth.cancel(); });
+
+        // Acessibilidade Visual
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            document.documentElement.classList.toggle('dark', state.darkMode);
+        }
+        function toggleHighContrast() {
+            state.highContrast = !state.highContrast;
+            document.body.classList.toggle('high-contrast', state.highContrast);
+        }
+        function adjustFont(delta) {
+            state.fontSize = Math.min(Math.max(state.fontSize + delta, 13), 22);
+            document.documentElement.style.setProperty('--font-scale', state.fontSize + 'px');
+        }
+        function resetFont() { adjustFont(16 - state.fontSize); }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.style.setProperty('--font-scale', state.fontSize + 'px');
+            renderNav();
+            navigate('home');
+        });
+    </script>
+</body>
+</html>
