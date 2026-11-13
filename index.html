@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arena Inclusiva — ONG Esporte Sem Limites</title>
+    
+    <!-- FAVICON: Logo na aba e na barra de pesquisa do navegador -->
+    <link rel="icon" href="Logotipo para empresa de representações simples em branco e preto.png" type="image/png">
+    
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons via CDN -->
@@ -39,6 +43,7 @@
             background-color: #000000 !important; color: #ffff00 !important; border: 2px solid #ffff00 !important;
         }
         
+        /* Classe para validação de erros */
         .input-error {
             border-color: #ef4444 !important;
             box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
@@ -81,20 +86,19 @@
         </div>
     </div>
 
-    <!-- Header Principal -->
+    <!-- Header Principal com a LOGO OFICIAL AJUSTADA -->
     <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <button class="flex items-center gap-2.5 cursor-pointer text-left rounded-lg p-1 focus-visible:ring-4 focus-visible:ring-blue-500" onclick="navigate('home')" aria-label="Ir para a página inicial">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-teal-500 flex items-center justify-center text-white shadow-md">
-                    <i data-lucide="trophy" aria-hidden="true" class="w-5 h-5"></i>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <button class="flex items-center gap-3 cursor-pointer text-left rounded-xl p-1 focus-visible:ring-4 focus-visible:ring-blue-500" onclick="navigate('home')" aria-label="Ir para a página inicial da Arena Inclusiva">
+                <!-- LOGO DO CLIENTE APLICADA COM FUNDO BRANCO PARA NÃO SUMIR NO MODO ESCURO -->
+                <img src="Logotipo para empresa de representações simples em branco e preto.png" alt="Logotipo oficial da ONG Arena Inclusiva" class="w-12 h-12 rounded-full object-contain bg-white p-1 shadow-sm border border-slate-300">
                 <div>
                     <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">ONG Arena Inclusiva</span>
                     <span class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider -mt-1">Esporte Sem Limites</span>
                 </div>
             </button>
 
-            <!-- Menu Desktop atualizado com as novas abas -->
+            <!-- Menu Desktop -->
             <nav id="desktop-nav" aria-label="Navegação principal" class="hidden lg:flex items-center gap-3"></nav>
 
             <button onclick="toggleMobileMenu()" id="btn-mobile-menu" aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menu de navegação" class="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus-visible:ring-4 focus-visible:ring-blue-500">
@@ -115,8 +119,9 @@
     <!-- Rodapé -->
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10 mt-16" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-2">
-                <i data-lucide="trophy" aria-hidden="true" class="w-5 h-5 text-blue-600"></i>
+            <div class="flex items-center gap-3">
+                <!-- LOGO DO CLIENTE NO RODAPÉ -->
+                <img src="Logotipo para empresa de representações simples em branco e preto.png" alt="Logotipo Arena Inclusiva no rodapé" class="w-10 h-10 rounded-full object-contain bg-white p-1">
                 <span class="font-bold text-slate-800 dark:text-white">ONG Arena Inclusiva — 2026</span>
             </div>
             <div class="flex gap-4 flex-wrap justify-center">
@@ -131,116 +136,37 @@
 
     <script>
         // ============================================================================
-        // DADOS REAIS DE ESPORTES E PRODUTOS (LOJA E CAMPEONATOS)
+        // DADOS REAIS DE ESPORTES E PRODUTOS
         // ============================================================================
         const SPORTS = [
-            { id: 'basquete', name: 'Basquete CR', category: 'Coletivo', disability: ['fisica'], disabilityLabel: 'Física', image: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&q=80&w=800', shortDesc: 'Disputado em quadra com cadeiras de rodas adaptadas.' },
-            { id: 'volei', name: 'Vôlei Sentado', category: 'Coletivo', disability: ['fisica', 'multipla'], disabilityLabel: 'Física/Múltipla', image: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800', shortDesc: 'Jogo rápido praticado com atletas sentados.' },
-            { id: 'goalball', name: 'Goalball', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800', shortDesc: 'Esporte criado para pessoas cegas, com bola sonora.' },
-            { id: 'futebol5', name: 'Futebol de 5', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=800', shortDesc: 'Futebol adaptado com guizos na bola.' },
-            { id: 'bocha', name: 'Bocha', category: 'Individual', disability: ['fisica', 'multipla'], disabilityLabel: 'Física Severa', image: 'https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?auto=format&fit=crop&q=80&w=800', shortDesc: 'Esporte de precisão e estratégia para paralisia cerebral.' },
-            { id: 'atletismo', name: 'Atletismo', category: 'Individual', disability: ['fisica', 'visual', 'intelectual'], disabilityLabel: 'Diversas', image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=800', shortDesc: 'Provas de corrida, saltos e arremessos adaptados.' }
+            { id: 'basquete', name: 'Basquete CR', category: 'Coletivo', disability: ['fisica'], disabilityLabel: 'Física', image: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&q=80&w=800', alt: 'Atletas disputando partida de basquete em cadeira de rodas em quadra coberta', shortDesc: 'Disputado em quadra com cadeiras de rodas adaptadas.' },
+            { id: 'volei', name: 'Vôlei Sentado', category: 'Coletivo', disability: ['fisica', 'multipla'], disabilityLabel: 'Física/Múltipla', image: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800', alt: 'Jogadoras de vôlei sentado comemorando ponto em quadra oficial', shortDesc: 'Jogo rápido praticado com atletas sentados.' },
+            { id: 'goalball', name: 'Goalball', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800', alt: 'Atleta com venda nos olhos defendendo arremesso de goalball em quadra tátil', shortDesc: 'Esporte criado para pessoas cegas, com bola sonora.' },
+            { id: 'futebol5', name: 'Futebol de 5', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=800', alt: 'Partida de futebol de 5 adaptado com jogadores usando vendas', shortDesc: 'Futebol adaptado com guizos na bola.' },
+            { id: 'bocha', name: 'Bocha', category: 'Individual', disability: ['fisica', 'multipla'], disabilityLabel: 'Física Severa', image: 'https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?auto=format&fit=crop&q=80&w=800', alt: 'Atleta concentrado jogando bocha paralímpica com calha direcional', shortDesc: 'Esporte de precisão e estratégia para paralisia cerebral.' },
+            { id: 'atletismo', name: 'Atletismo', category: 'Individual', disability: ['fisica', 'visual', 'intelectual'], disabilityLabel: 'Diversas', image: 'https://images.unsplash.com/photo-1574314983057-0dbec3be05a3?auto=format&fit=crop&q=80&w=800', alt: 'Atleta paralímpico correndo em pista de atletismo com prótese de fibra de carbono', shortDesc: 'Provas de corrida, saltos e arremessos adaptados.' }
         ];
 
         const STORE_PRODUCTS = [
-            {
-                id: 'prod-1',
-                sport: 'Basquete em Cadeira de Rodas',
-                name: 'Cadeira de Rodas Esportiva Monobloco em Alumínio',
-                price: 'R$ 4.890,00',
-                image: 'https://images.unsplash.com/photo-1563816650965-7281eb2be289?q=80&w=600&auto=format&fit=crop',
-                alt: 'Atleta utilizando cadeira de rodas esportiva em quadra'
-            },
-            {
-                id: 'prod-2',
-                sport: 'Basquete em Cadeira de Rodas',
-                name: 'Luvas de Propulsão de Alta Aderência (Meio Dedo)',
-                price: 'R$ 180,00',
-                image: 'https://images.unsplash.com/photo-1515523110800-9415d13b84a8?q=80&w=600&auto=format&fit=crop',
-                alt: 'Luvas esportivas resistentes'
-            },
-            {
-                id: 'prod-3',
-                sport: 'Goalball & Futebol de 5 (Cegos)',
-                name: 'Bola Oficial com Guizos Internos (Tamanho Adulto)',
-                price: 'R$ 350,00',
-                image: 'https://images.unsplash.com/photo-1614632537190-23e4146777db?q=80&w=600&auto=format&fit=crop',
-                alt: 'Bola de futebol texturizada'
-            },
-            {
-                id: 'prod-4',
-                sport: 'Goalball & Futebol de 5 (Cegos)',
-                name: 'Óculos de Venda (Tapa-olhos) Oficiais em Neoprene',
-                price: 'R$ 95,00',
-                image: 'https://images.unsplash.com/photo-1582254465498-6bc70419b607?q=80&w=600&auto=format&fit=crop',
-                alt: 'Venda esportiva para os olhos'
-            },
-            {
-                id: 'prod-5',
-                sport: 'Bocha Paralímpica',
-                name: 'Kit Profissional de Bolas de Bocha (Couro Sintético - 6 azuis, 6 vermelhas, 1 branca)',
-                price: 'R$ 2.450,00',
-                image: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?q=80&w=600&auto=format&fit=crop',
-                alt: 'Bolas coloridas esportivas'
-            },
-            {
-                id: 'prod-6',
-                sport: 'Bocha Paralímpica',
-                name: 'Calha / Rampa Articulada para Lançamento',
-                price: 'R$ 1.290,00',
-                image: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=600&auto=format&fit=crop',
-                alt: 'Equipamento de rampa para bocha'
-            },
-            {
-                id: 'prod-7',
-                sport: 'Atletismo Paralímpico',
-                name: 'Prótese de Fibra de Carbono (Lâmina de Corrida)',
-                price: 'R$ 12.500,00',
-                image: 'https://images.unsplash.com/photo-1574314983057-0dbec3be05a3?q=80&w=600&auto=format&fit=crop',
-                alt: 'Prótese de perna para corrida em pista'
-            }
+            { id: 'prod-1', sport: 'Basquete em Cadeira de Rodas', name: 'Cadeira de Rodas Esportiva Monobloco em Alumínio', price: 'R$ 4.890,00', image: 'https://images.unsplash.com/photo-1563816650965-7281eb2be289?q=80&w=600&auto=format&fit=crop', alt: 'Atleta utilizando cadeira de rodas esportiva em quadra' },
+            { id: 'prod-2', sport: 'Basquete em Cadeira de Rodas', name: 'Luvas de Propulsão de Alta Aderência (Meio Dedo)', price: 'R$ 180,00', image: 'https://images.unsplash.com/photo-1515523110800-9415d13b84a8?q=80&w=600&auto=format&fit=crop', alt: 'Luvas esportivas resistentes' },
+            { id: 'prod-3', sport: 'Goalball & Futebol de 5 (Cegos)', name: 'Bola Oficial com Guizos Internos (Tamanho Adulto)', price: 'R$ 350,00', image: 'https://images.unsplash.com/photo-1614632537190-23e4146777db?q=80&w=600&auto=format&fit=crop', alt: 'Bola de futebol texturizada' },
+            { id: 'prod-4', sport: 'Goalball & Futebol de 5 (Cegos)', name: 'Óculos de Venda (Tapa-olhos) Oficiais em Neoprene', price: 'R$ 95,00', image: 'https://images.unsplash.com/photo-1582254465498-6bc70419b607?q=80&w=600&auto=format&fit=crop', alt: 'Venda esportiva para os olhos' },
+            { id: 'prod-5', sport: 'Bocha Paralímpica', name: 'Kit Profissional de Bolas de Bocha (Couro Sintético - 6 azuis, 6 vermelhas, 1 branca)', price: 'R$ 2.450,00', image: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?q=80&w=600&auto=format&fit=crop', alt: 'Bolas coloridas esportivas' },
+            { id: 'prod-6', sport: 'Bocha Paralímpica', name: 'Calha / Rampa Articulada para Lançamento', price: 'R$ 1.290,00', image: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=600&auto=format&fit=crop', alt: 'Equipamento de rampa para bocha' },
+            { id: 'prod-7', sport: 'Atletismo Paralímpico', name: 'Prótese de Fibra de Carbono (Lâmina de Corrida)', price: 'R$ 12.500,00', image: 'https://images.unsplash.com/photo-1574314983057-0dbec3be05a3?q=80&w=600&auto=format&fit=crop', alt: 'Prótese de perna para corrida em pista' }
         ];
 
         const CHAMPIONSHIPS = [
-            {
-                id: 'champ-1',
-                name: 'Jogos Paralímpicos (LA28)',
-                sports: 'Todas as modalidades (Natação, Atletismo, Basquete CR, etc.)',
-                location: 'Los Angeles, EUA (Próxima edição de Verão)',
-                description: 'O maior evento multiesportivo mundial para atletas com deficiência.'
-            },
-            {
-                id: 'champ-2',
-                name: 'Copa Loterias Caixa',
-                sports: 'Atletismo, Halterofilismo e Natação',
-                location: 'Centro de Treinamento Paralímpico Brasileiro (CTPB) - São Paulo, SP, Brasil',
-                description: 'O circuito nacional mais importante destas modalidades, organizado pelo Comitê Paralímpico Brasileiro (CPB).'
-            },
-            {
-                id: 'champ-3',
-                name: 'Campeonato Brasileiro de Basquete em Cadeira de Rodas (1ª Divisão)',
-                sports: 'Basquete em Cadeira de Rodas',
-                location: 'Ocorre anualmente no Centro de Treinamento Paralímpico, São Paulo',
-                description: 'Principal competição nacional de clubes, reunindo as melhores equipes do país.'
-            },
-            {
-                id: 'champ-4',
-                name: 'Paralimpíadas Escolares',
-                sports: 'Tênis de Mesa, Goalball, Bocha, Judô, etc.',
-                location: 'São Paulo, SP',
-                description: 'Maior evento mundial para crianças e jovens com deficiência em idade escolar.'
-            },
-            {
-                id: 'champ-5',
-                name: 'Campeonato Regional e Brasileiro de Goalball',
-                sports: 'Goalball',
-                location: 'Organizado pela CBDV (Confederação Brasileira de Desportos de Deficientes Visuais), com fases regionais pelo Brasil e finais em São Paulo.',
-                description: 'Competição oficial de alto rendimento para atletas com deficiência visual.'
-            }
+            { id: 'champ-1', name: 'Jogos Paralímpicos (LA28)', sports: 'Todas as modalidades', location: 'Los Angeles, EUA', description: 'O maior evento multiesportivo mundial para atletas com deficiência.' },
+            { id: 'champ-2', name: 'Copa Loterias Caixa', sports: 'Atletismo, Halterofilismo e Natação', location: 'CTPB - São Paulo, SP', description: 'Circuito nacional mais importante organizado pelo CPB.' },
+            { id: 'champ-3', name: 'Campeonato Brasileiro de Basquete em Cadeira de Rodas', sports: 'Basquete CR', location: 'São Paulo, SP', description: 'Principal competição nacional de clubes.' },
+            { id: 'champ-4', name: 'Paralimpíadas Escolares', sports: 'Modalidades diversas', location: 'São Paulo, SP', description: 'Maior evento mundial para jovens atletas em idade escolar.' },
+            { id: 'champ-5', name: 'Campeonato Brasileiro de Goalball', sports: 'Goalball', location: 'Fases Regionais e Nacionais', description: 'Organizado pela CBDV para atletas com deficiência visual.' }
         ];
 
         // ============================================================================
-        // GERENCIAMENTO DE ROTAS E SPA (12 ABAS TOTAIS)
+        // GERENCIAMENTO DE ROTAS, SPA E ESTADO
         // ============================================================================
         function loadStoredUser() {
             const raw = localStorage.getItem('arena_user');
@@ -250,13 +176,11 @@
         let state = {
             route: 'home',
             user: loadStoredUser(),
-            favorites: JSON.parse(localStorage.getItem('arena_favs')) || [],
             cart: JSON.parse(localStorage.getItem('arena_cart')) || [],
             fontSize: parseInt(localStorage.getItem('arena_font')) || 16,
             darkMode: localStorage.getItem('arena_dark') === 'true',
             highContrast: localStorage.getItem('arena_contrast') === 'true',
-            quizStep: 1,
-            quizData: { name: '', email: '', password: '', hasDisability: '', disabilityType: '', interest: 'Todos' }
+            quiz: { step: 0, deficiencia: '', categoria: '' }
         };
 
         const ROUTE_NAMES = {
@@ -282,6 +206,7 @@
             
             const btnClass = (r) => `text-xs xl:text-sm font-semibold px-2 py-1 rounded focus-visible:ring-4 focus-visible:ring-blue-500 transition ${state.route === r ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-600 dark:text-slate-300 hover:text-blue-600'}`;
 
+            // Botões que aparecem independente de estar logado
             let links = `
                 <button onclick="navigate('home')" class="${btnClass('home')}">Início</button>
                 <button onclick="navigate('about')" class="${btnClass('about')}">Sobre</button>
@@ -293,16 +218,17 @@
                 <button onclick="navigate('donate')" class="${btnClass('donate')}">Doar</button>
             `;
 
+            // LÓGICA DO MENU: Esconder Entrar/Cadastro se o usuário estiver logado
             if (state.user) {
                 links += `
-                    <button onclick="navigate('recommendations')" class="${btnClass('recommendations')}">Recomendações</button>
+                    <button onclick="navigate('recommendations')" class="${btnClass('recommendations')}">Questionário / Recomendações</button>
                     <button onclick="navigate('profile')" class="${btnClass('profile')}">Perfil</button>
-                    <button aria-label="Sair da conta" onclick="logout()" class="ml-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition focus-visible:ring-4 focus-visible:ring-red-500">Sair</button>
+                    <button aria-label="Sair da conta" onclick="logout()" class="ml-1 px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold transition">Sair</button>
                 `;
             } else {
                 links += `
                     <button onclick="navigate('login')" class="${btnClass('login')}">Entrar</button>
-                    <button onclick="navigate('register')" class="ml-1 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition focus-visible:ring-4 focus-visible:ring-blue-500">Cadastro</button>
+                    <button onclick="navigate('register')" class="ml-1 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition">Cadastro</button>
                 `;
             }
 
@@ -312,6 +238,7 @@
 
         function logout() {
             state.user = null;
+            state.quiz.step = 0; 
             localStorage.removeItem('arena_user');
             navigate('home');
         }
@@ -321,7 +248,7 @@
         }
 
         // ============================================================================
-        // VALIDAÇÕES JS EXIGIDAS
+        // VALIDAÇÕES JS
         // ============================================================================
         function setFieldError(id, msg) {
             const el = document.getElementById(id);
@@ -329,7 +256,6 @@
             if(el) { el.classList.add('input-error'); el.setAttribute('aria-invalid', 'true'); }
             if(err) { err.textContent = msg; err.classList.remove('hidden'); }
         }
-
         function clearFieldError(id) {
             const el = document.getElementById(id);
             const err = document.getElementById(id + '-error');
@@ -348,8 +274,31 @@
 
             if (!valid) { announceToScreenReader('Erros no formulário de login.'); return; }
 
-            state.user = { name: email.split('@')[0], email, interest: 'Todos' };
+            state.user = { name: email.split('@')[0], email, type: 'Usuário Padrão' };
             localStorage.setItem('arena_user', JSON.stringify(state.user));
+            navigate('recommendations');
+        }
+
+        function validateRegister(e) {
+            e.preventDefault();
+            let valid = true;
+            
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const type = document.getElementById('reg-type').value;
+            const pass = document.getElementById('reg-pass').value.trim();
+            const passConf = document.getElementById('reg-pass-conf').value.trim();
+
+            if (name.length < 3) { setFieldError('reg-name', 'Nome deve ter pelo menos 3 caracteres.'); valid = false; } else { clearFieldError('reg-name'); }
+            if (!email.includes('@') || !email.includes('.')) { setFieldError('reg-email', 'Informe um e-mail válido.'); valid = false; } else { clearFieldError('reg-email'); }
+            if (pass.length < 6) { setFieldError('reg-pass', 'A senha precisa ter no mínimo 6 caracteres.'); valid = false; } else { clearFieldError('reg-pass'); }
+            if (pass !== passConf) { setFieldError('reg-pass-conf', 'As senhas não coincidem.'); valid = false; } else { clearFieldError('reg-pass-conf'); }
+
+            if (!valid) { announceToScreenReader('Erros no formulário de cadastro.'); return; }
+
+            state.user = { name: name, email: email, type: type };
+            localStorage.setItem('arena_user', JSON.stringify(state.user));
+            alert('Conta gratuita criada com sucesso! Bem-vindo(a) à Arena Inclusiva.');
             navigate('recommendations');
         }
 
@@ -364,14 +313,13 @@
             if (!em.includes('@')) { setFieldError('cont-email', 'E-mail inválido.'); valid = false; } else { clearFieldError('cont-email'); }
             if (msg.length < 10) { setFieldError('cont-msg', 'A mensagem deve ter pelo menos 10 caracteres.'); valid = false; } else { clearFieldError('cont-msg'); }
 
-            if (!valid) { announceToScreenReader('Erros no formulário de contato.'); return; }
-
+            if (!valid) return;
             alert('Sua mensagem foi enviada com sucesso à ONG Arena Inclusiva!');
             navigate('home');
         }
 
         // ============================================================================
-        // RENDERIZAÇÃO DAS PÁGINAS DO SISTEMA
+        // RENDERIZAÇÃO DAS PÁGINAS 
         // ============================================================================
         function renderMain() {
             const main = document.getElementById('app-content');
@@ -391,8 +339,12 @@
             }
         }
 
-        // 1. INÍCIO
         function viewHome() {
+            // LÓGICA DO BOTÃO DA PÁGINA INICIAL: Se estiver logado, altera o botão "Criar Conta" para "Acessar Meu Perfil"
+            const callToActionButton = state.user 
+                ? `<button aria-label="Acessar Meu Perfil" onclick="navigate('profile')" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/30 focus-visible:ring-4 focus-visible:ring-yellow-400 transition-transform transform hover:-translate-y-1">Acessar Meu Perfil</button>`
+                : `<button aria-label="Botão Faça Parte do Projeto" onclick="navigate('register')" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/30 focus-visible:ring-4 focus-visible:ring-yellow-400 transition-transform transform hover:-translate-y-1">Criar Conta Gratuita</button>`;
+
             return `
                 <section class="bg-gradient-to-br from-blue-50 to-teal-50 dark:from-slate-900 py-20 px-4 text-center">
                     <div class="max-w-4xl mx-auto">
@@ -400,7 +352,7 @@
                         <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight text-slate-900 dark:text-white">Esporte Sem Limites</h1>
                         <p class="text-xl text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">Conectando pessoas com ou sem deficiência ao esporte ideal através de tecnologia, campeonatos e equipamentos acessíveis.</p>
                         <div class="flex flex-wrap justify-center gap-4">
-                            <button aria-label="Botão Faça Parte do Projeto" onclick="navigate('register')" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/30 focus-visible:ring-4 focus-visible:ring-yellow-400 transition-transform transform hover:-translate-y-1">Faça Parte do Projeto</button>
+                            ${callToActionButton}
                             <button aria-label="Botão Conhecer a Loja Inclusiva" onclick="navigate('store')" class="px-8 py-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-lg shadow-xl focus-visible:ring-4 focus-visible:ring-yellow-400 transition-transform transform hover:-translate-y-1">Conhecer Loja Inclusiva</button>
                         </div>
                     </div>
@@ -421,36 +373,32 @@
                         <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 text-center">
                             <i data-lucide="cpu" aria-hidden="true" class="w-12 h-12 text-indigo-500 mx-auto mb-4"></i>
                             <h3 class="font-bold text-lg mb-2">Recomendador Inteligente</h3>
-                            <p class="text-slate-600 dark:text-slate-400 text-sm">Algoritmo que sugere modalidades esportivas com base no seu perfil.</p>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">Responda ao nosso questionário e a IA sugere modalidades esportivas ideais para o seu perfil.</p>
                         </div>
                     </div>
                 </section>
             `;
         }
 
-        // 2. SOBRE A ONG (Com Vídeo)
         function viewAbout() {
             return `
                 <div class="max-w-5xl mx-auto px-4 py-12">
                     <h1 class="text-4xl font-extrabold mb-6">Sobre a ONG Arena Inclusiva</h1>
                     <p class="text-lg text-slate-600 dark:text-slate-400 mb-6">Nascemos em 2026 como um projeto do curso Superior de Informática da UNICID. Nossa meta é criar uma ponte tecnológica entre atletas paralímpicos, entusiastas e federações.</p>
                     <p class="text-lg text-slate-600 dark:text-slate-400 mb-10">Oferecemos catálogo de equipamentos na Loja Inclusiva, divulgação rigorosa de competições e suporte humanizado.</p>
-                    
                     <h2 class="text-2xl font-bold mb-4">O Poder do Esporte Paralímpico</h2>
                     <div class="w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-black">
-                        <iframe style="width:100%; height:500px;" src="https://www.youtube.com/embed/S2_x1QdE4mY" title="Vídeo Inspiracional - Comitê Paralímpico Brasileiro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe style="width:100%; height:500px;" src="https://youtu.be/5FvTEICsUdc?si=H6ICznC2tLJRPvL-" title="Vídeo Inspiracional - Comitê Paralímpico Brasileiro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
             `;
         }
 
-        // 3. NOTÍCIAS
         function viewNews() {
             return `
                 <div class="max-w-6xl mx-auto px-4 py-12">
                     <h1 class="text-4xl font-extrabold mb-2">Notícias e Competições</h1>
                     <p class="text-slate-600 dark:text-slate-400 mb-10">Fique por dentro das atualizações do esporte adaptado nacional e internacional.</p>
-                    
                     <div class="grid md:grid-cols-2 gap-8">
                         <article class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
                             <span class="text-xs font-bold px-2 py-1 bg-teal-100 text-teal-800 rounded uppercase">Nacional • 2026</span>
@@ -467,7 +415,6 @@
             `;
         }
 
-        // 4. CATÁLOGO
         function viewCatalog() {
             return `
                 <div class="max-w-7xl mx-auto px-4 py-12">
@@ -478,7 +425,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         ${SPORTS.map(s => `
                             <article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm flex flex-col">
-                                <img src="${s.image}" alt="Foto ilustrativa de ${s.name}" class="w-full h-48 object-cover bg-slate-200">
+                                <img src="${s.image}" alt="${s.alt}" class="w-full h-48 object-cover bg-slate-200">
                                 <div class="p-6 flex-grow flex flex-col">
                                     <span class="text-xs font-bold text-teal-600 mb-1">${s.category} • ${s.disabilityLabel}</span>
                                     <h3 class="text-xl font-extrabold mb-2">${s.name}</h3>
@@ -492,9 +439,6 @@
             `;
         }
 
-        // ============================================================================
-        // TAREFA 2: ABA / PÁGINA "LOJA INCLUSIVA"
-        // ============================================================================
         function viewStore() {
             return `
                 <div class="max-w-7xl mx-auto px-4 py-12">
@@ -544,9 +488,6 @@
             announceToScreenReader(`${prod.name} adicionado ao carrinho.`);
         }
 
-        // ============================================================================
-        // TAREFA 3: ABA / PÁGINA "CAMPEONATOS"
-        // ============================================================================
         function viewChampionships() {
             return `
                 <div class="max-w-6xl mx-auto px-4 py-12">
@@ -555,7 +496,6 @@
                         <h1 class="text-3xl md:text-4xl font-extrabold mt-1">Campeonatos e Torneios</h1>
                         <p class="text-slate-600 dark:text-slate-400 mt-2 max-w-2xl">Consulte as principais competições nacionais e internacionais que movimentam o calendário dos atletas com deficiência.</p>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         ${CHAMPIONSHIPS.map(c => `
                             <article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm flex flex-col justify-between hover:border-blue-500 transition">
@@ -567,7 +507,7 @@
                                     <p class="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">Esportes: ${c.sports}</p>
                                     <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">${c.description}</p>
                                 </div>
-                                <button aria-label="Mais informações sobre o campeonato ${c.name}" onclick="alert('Inscrições e credenciamento abertos nos canais oficiais das federações.')" class="w-full py-3 bg-slate-100 hover:bg-blue-600 hover:text-white dark:bg-slate-800 dark:hover:bg-blue-600 text-slate-800 dark:text-white font-bold rounded-xl transition focus-visible:ring-4 focus-visible:ring-blue-500 text-sm">
+                                <button aria-label="Mais informações sobre o campeonato ${c.name}" onclick="alert('Inscrições abertas nos canais oficiais das federações.')" class="w-full py-3 bg-slate-100 hover:bg-blue-600 hover:text-white dark:bg-slate-800 dark:hover:bg-blue-600 text-slate-800 dark:text-white font-bold rounded-xl transition focus-visible:ring-4 focus-visible:ring-blue-500 text-sm">
                                     Ver Detalhes do Evento
                                 </button>
                             </article>
@@ -577,7 +517,6 @@
             `;
         }
 
-        // 5. CONTATO (Com Validação JS)
         function viewContact() {
             return `
                 <div class="max-w-lg mx-auto px-4 py-12">
@@ -608,7 +547,6 @@
             `;
         }
 
-        // 6. DOAÇÃO
         function viewDonate() {
             return `
                 <div class="max-w-3xl mx-auto px-4 py-12 text-center">
@@ -624,7 +562,6 @@
             `;
         }
 
-        // 7. LOGIN
         function viewLogin() {
             return `
                 <div class="max-w-md mx-auto my-16 px-4">
@@ -651,48 +588,146 @@
             `;
         }
 
-        // 8. CADASTRO
         function viewRegister() {
             return `
-                <div class="max-w-md mx-auto my-16 px-4">
-                    <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl text-center">
-                        <h2 class="text-2xl font-extrabold mb-4">Cadastro Rápido</h2>
-                        <p class="text-slate-600 dark:text-slate-400 mb-6 text-sm">Crie seu perfil de atleta ou apoiador instantaneamente.</p>
-                        <button onclick="state.user={name:'Atleta Exemplo', email:'atleta@ong.br'}; localStorage.setItem('arena_user', JSON.stringify(state.user)); navigate('recommendations');" class="w-full py-3.5 bg-blue-600 text-white font-bold rounded-xl shadow-md focus-visible:ring-4 focus-visible:ring-yellow-400">Criar Conta de Teste</button>
+                <div class="max-w-md mx-auto my-12 px-4">
+                    <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl">
+                        <div class="text-center mb-6">
+                            <h2 class="text-2xl font-extrabold mb-2">Criar Conta Gratuita</h2>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">O cadastro é 100% gratuito. Você só utiliza dinheiro se quiser fazer doações ou comprar na loja.</p>
+                        </div>
+                        <form onsubmit="validateRegister(event)" novalidate class="space-y-4">
+                            <div>
+                                <label for="reg-name" class="block font-bold text-sm mb-1">Nome Completo</label>
+                                <input type="text" id="reg-name" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="reg-name-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <div>
+                                <label for="reg-email" class="block font-bold text-sm mb-1">E-mail</label>
+                                <input type="email" id="reg-email" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="reg-email-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <div>
+                                <label for="reg-type" class="block font-bold text-sm mb-1">Como você se identifica?</label>
+                                <select id="reg-type" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                    <option value="Atleta PCD">Atleta (Pessoa com Deficiência)</option>
+                                    <option value="Familiar / Apoiador">Familiar ou Apoiador</option>
+                                    <option value="Voluntário">Voluntário da ONG</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="reg-pass" class="block font-bold text-sm mb-1">Senha</label>
+                                <input type="password" id="reg-pass" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="reg-pass-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <div>
+                                <label for="reg-pass-conf" class="block font-bold text-sm mb-1">Confirmar Senha</label>
+                                <input type="password" id="reg-pass-conf" class="w-full p-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 outline-none">
+                                <span id="reg-pass-conf-error" class="text-red-500 text-xs font-bold mt-1 hidden" aria-live="assertive"></span>
+                            </div>
+                            <button type="submit" aria-label="Concluir Cadastro" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl mt-4 focus-visible:ring-4 focus-visible:ring-yellow-400 transition-colors">Concluir Cadastro Gratuito</button>
+                        </form>
                     </div>
                 </div>
             `;
         }
 
-        // 9. RECOMENDAÇÕES
+        // ============================================================================
+        // SISTEMA DE QUESTIONÁRIO INTELIGENTE
+        // ============================================================================
         function viewRecommendations() {
-            return `
-                <div class="max-w-7xl mx-auto px-4 py-12 text-center">
-                    <div class="bg-blue-600 rounded-3xl p-8 text-white shadow-xl mb-10">
-                        <h1 class="text-3xl font-extrabold">Olá, ${state.user.name}!</h1>
-                        <p class="mt-2 opacity-90">Aqui estão as modalidades sugeridas com base no seu perfil.</p>
+            if (state.quiz.step === 0) {
+                return `
+                    <div class="max-w-4xl mx-auto px-4 py-16 text-center">
+                        <i data-lucide="brain-circuit" class="w-20 h-20 mx-auto text-blue-600 mb-6"></i>
+                        <h1 class="text-4xl font-extrabold mb-4">Recomendador Inteligente</h1>
+                        <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">Responda a um questionário rápido de 2 etapas. Nossa inteligência artificial filtrará as modalidades paradesportivas perfeitas para o seu perfil e objetivos.</p>
+                        <button onclick="startQuiz()" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-lg focus-visible:ring-4 focus-visible:ring-yellow-400 transition shadow-lg">Iniciar Questionário</button>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${viewSportCardHTML(SPORTS[0], 95)}
-                        ${viewSportCardHTML(SPORTS[2], 90)}
+                `;
+            }
+            
+            if (state.quiz.step === 1) {
+                return `
+                    <div class="max-w-3xl mx-auto px-4 py-16 text-center">
+                        <span class="text-sm font-bold text-blue-600 uppercase tracking-wider">Etapa 1 de 2</span>
+                        <h2 class="text-3xl font-extrabold mt-2 mb-8">Qual o seu tipo de deficiência?</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <button onclick="setQuizDeficiencia('fisica')" class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-blue-500 hover:shadow-md transition text-lg font-bold">Física / Motora</button>
+                            <button onclick="setQuizDeficiencia('visual')" class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-blue-500 hover:shadow-md transition text-lg font-bold">Visual</button>
+                            <button onclick="setQuizDeficiencia('intelectual')" class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-blue-500 hover:shadow-md transition text-lg font-bold">Intelectual</button>
+                            <button onclick="setQuizDeficiencia('multipla')" class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-blue-500 hover:shadow-md transition text-lg font-bold">Múltipla</button>
+                            <button onclick="setQuizDeficiencia('nenhuma')" class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-blue-500 hover:shadow-md transition text-lg font-bold md:col-span-2">Não possuo deficiência (Busco Inclusão / Voluntariado)</button>
+                        </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
+
+            if (state.quiz.step === 2) {
+                return `
+                    <div class="max-w-3xl mx-auto px-4 py-16 text-center">
+                        <span class="text-sm font-bold text-blue-600 uppercase tracking-wider">Etapa 2 de 2</span>
+                        <h2 class="text-3xl font-extrabold mt-2 mb-8">Você prefere esportes Individuais ou Coletivos?</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <button onclick="setQuizCategoria('Individual')" class="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-teal-500 hover:shadow-md transition">
+                                <i data-lucide="user" class="w-12 h-12 mx-auto text-teal-600 mb-4"></i>
+                                <span class="text-xl font-bold">Individual</span>
+                                <p class="text-sm text-slate-500 mt-2">Foco no seu próprio desempenho, concentração e superação.</p>
+                            </button>
+                            <button onclick="setQuizCategoria('Coletivo')" class="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-blue-500 hover:shadow-md transition">
+                                <i data-lucide="users" class="w-12 h-12 mx-auto text-blue-600 mb-4"></i>
+                                <span class="text-xl font-bold">Coletivo (Equipe)</span>
+                                <p class="text-sm text-slate-500 mt-2">Trabalho em equipe, estratégia conjunta e forte socialização.</p>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (state.quiz.step === 3) {
+                let filtrados = SPORTS.filter(s => {
+                    const matchDef = (state.quiz.deficiencia === 'nenhuma') || s.disability.includes(state.quiz.deficiencia);
+                    const matchCat = s.category === state.quiz.categoria;
+                    return matchDef && matchCat;
+                });
+
+                if (filtrados.length === 0) {
+                    filtrados = SPORTS.filter(s => s.disability.includes(state.quiz.deficiencia) || state.quiz.deficiencia === 'nenhuma').slice(0, 2);
+                }
+                if (filtrados.length === 0) filtrados = SPORTS.slice(0, 2);
+
+                return `
+                    <div class="max-w-7xl mx-auto px-4 py-12 text-center">
+                        <div class="bg-gradient-to-r from-blue-600 to-teal-500 rounded-3xl p-8 text-white shadow-xl mb-10">
+                            <h1 class="text-3xl font-extrabold">Análise Concluída, ${state.user.name}!</h1>
+                            <p class="mt-2 text-lg opacity-90">Com base nas suas respostas, separamos as modalidades perfeitas para o seu perfil.</p>
+                            <button onclick="restartQuiz()" class="mt-6 px-6 py-2 bg-white/20 hover:bg-white/30 text-white font-bold rounded-full text-sm transition focus-visible:ring-4 focus-visible:ring-yellow-400">Refazer Teste</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                            ${filtrados.map(sport => viewSportCardHTML(sport, 98)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
         }
+
+        function startQuiz() { state.quiz.step = 1; renderMain(); announceToScreenReader("Etapa 1 de 2: Qual o seu tipo de deficiência?"); lucide.createIcons(); }
+        function setQuizDeficiencia(val) { state.quiz.deficiencia = val; state.quiz.step = 2; renderMain(); announceToScreenReader("Etapa 2 de 2: Você prefere esportes individuais ou coletivos?"); lucide.createIcons(); }
+        function setQuizCategoria(val) { state.quiz.categoria = val; state.quiz.step = 3; renderMain(); announceToScreenReader("Análise concluída. Exibindo resultados recomendados para você."); lucide.createIcons(); }
+        function restartQuiz() { state.quiz.step = 0; renderMain(); lucide.createIcons(); }
 
         function viewSportCardHTML(sport, score) {
             return `
                 <article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm text-left flex flex-col">
-                    <img src="${sport.image}" alt="Imagem de ${sport.name}" class="w-full h-40 object-cover rounded-xl mb-4 bg-slate-200">
+                    <img src="${sport.image}" alt="${sport.alt}" class="w-full h-40 object-cover rounded-xl mb-4 bg-slate-200">
                     <h3 class="text-xl font-extrabold mb-2">${sport.name}</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 mb-4 flex-grow">${sport.shortDesc}</p>
-                    <div class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 text-xs font-bold rounded-lg mb-4">Compatibilidade estimada: ${score}%</div>
-                    <button aria-label="Saiba mais sobre ${sport.name}" onclick="openSportModal('${sport.id}')" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl">Ver Detalhes</button>
+                    <div class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 text-xs font-bold rounded-lg mb-4">Compatibilidade com seu perfil: ${score}%</div>
+                    <button aria-label="Saiba mais sobre ${sport.name}" onclick="openSportModal('${sport.id}')" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl transition focus-visible:ring-4 focus-visible:ring-yellow-400">Ver Detalhes</button>
                 </article>
             `;
         }
 
-        // 10. MEU PERFIL
         function viewProfile() {
             const u = state.user;
             const myCart = state.cart;
@@ -701,9 +736,9 @@
                     <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-700 shadow-sm mb-8 flex justify-between items-center flex-wrap gap-4">
                         <div>
                             <h1 class="text-3xl font-extrabold">${u.name}</h1>
-                            <p class="text-slate-500">${u.email}</p>
+                            <p class="text-slate-500">${u.email} • ${u.type || 'Usuário Padrão'}</p>
                         </div>
-                        <button onclick="logout()" class="px-4 py-2 bg-red-100 text-red-700 font-bold rounded-xl text-sm">Sair da Conta</button>
+                        <button onclick="logout()" class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-bold rounded-xl text-sm transition focus-visible:ring-4 focus-visible:ring-red-500">Sair da Conta</button>
                     </div>
 
                     <h2 class="text-2xl font-extrabold mb-4">Meus Pedidos na Loja Inclusiva (${myCart.length})</h2>
@@ -722,12 +757,11 @@
                                 </div>
                             `).join('')}
                         </div>
-                    ` : `<p class="text-slate-500 p-6 border border-dashed rounded-xl text-center">Nenhum produto adquirido na Loja Inclusiva até o momento.</p>`}
+                    ` : `<p class="text-slate-500 p-6 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-center">Nenhum produto adquirido na Loja Inclusiva até o momento.</p>`}
                 </div>
             `;
         }
 
-        // Modal Detalhado de Esportes
         function openSportModal(id) {
             const s = SPORTS.find(x => x.id === id);
             if (!s) return;
@@ -737,9 +771,9 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h2 id="modal-title" class="text-2xl font-extrabold">${s.name}</h2>
-                        <button onclick="closeSportModal()" aria-label="Fechar janela" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold">✕</button>
+                        <button onclick="closeSportModal()" aria-label="Fechar janela" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-bold hover:bg-slate-300 transition focus-visible:ring-4 focus-visible:ring-blue-500">✕</button>
                     </div>
-                    <img src="${s.image}" alt="" aria-hidden="true" class="w-full h-56 object-cover rounded-xl mb-4">
+                    <img src="${s.image}" alt="${s.alt}" class="w-full h-56 object-cover rounded-xl mb-4">
                     <p class="text-slate-600 dark:text-slate-300 mb-4">${s.shortDesc}</p>
                     <p class="text-sm"><strong>Categoria:</strong> ${s.category} | <strong>Público-alvo:</strong> Deficiência ${s.disabilityLabel}</p>
                 </div>
@@ -753,9 +787,6 @@
         }
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSportModal(); });
 
-        // ============================================================================
-        // MOTOR DE VOZ E MOUSE (TTS + HOVER)
-        // ============================================================================
         let isAudioActive = false;
         const synth = window.speechSynthesis;
         let hoverTimeout = null;
@@ -800,7 +831,6 @@
             if (a) { a.textContent = msg; setTimeout(() => a.textContent = '', 3000); }
         }
 
-        // Leitura por Aproximação do Mouse (Hover)
         document.addEventListener('mouseover', (e) => {
             if (!isAudioActive || !synth) return;
             const target = e.target.closest('button, a, h1, h2, h3, h4, p, label, img, input, textarea, select, span, article');
@@ -828,7 +858,6 @@
             lastHoveredElement = null;
         });
 
-        // Controles Visuais de Acessibilidade
         function toggleDarkMode() {
             state.darkMode = !state.darkMode;
             document.documentElement.classList.toggle('dark', state.darkMode);
