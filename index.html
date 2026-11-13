@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arena Inclusiva — ONG Esporte Sem Limites</title>
     
-    <!-- FAVICON: Logo na aba e na barra de pesquisa do navegador -->
-    <link rel="icon" href="Logotipo para empresa de representações simples em branco e preto.png" type="image/png">
+    <!-- FAVICON (Logo local em SVG) -->
+    <link rel="icon" href="images/logo-arena.svg" type="image/svg+xml">
     
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,7 +43,6 @@
             background-color: #000000 !important; color: #ffff00 !important; border: 2px solid #ffff00 !important;
         }
         
-        /* Classe para validação de erros */
         .input-error {
             border-color: #ef4444 !important;
             box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
@@ -86,12 +85,12 @@
         </div>
     </div>
 
-    <!-- Header Principal com a LOGO OFICIAL AJUSTADA -->
+    <!-- Header Principal -->
     <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <button class="flex items-center gap-3 cursor-pointer text-left rounded-xl p-1 focus-visible:ring-4 focus-visible:ring-blue-500" onclick="navigate('home')" aria-label="Ir para a página inicial da Arena Inclusiva">
-                <!-- LOGO DO CLIENTE APLICADA COM FUNDO BRANCO PARA NÃO SUMIR NO MODO ESCURO -->
-                <img src="Logotipo para empresa de representações simples em branco e preto.png" alt="Logotipo oficial da ONG Arena Inclusiva" class="w-12 h-12 rounded-full object-contain bg-white p-1 shadow-sm border border-slate-300">
+                <!-- LOGO LOCAL -->
+                <img src="images/logo-arena.svg" alt="Logotipo oficial da ONG Arena Inclusiva" class="w-12 h-12 rounded-full object-cover bg-white shadow-sm border border-slate-300">
                 <div>
                     <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-blue-600 to-teal-500 bg-clip-text text-transparent">ONG Arena Inclusiva</span>
                     <span class="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider -mt-1">Esporte Sem Limites</span>
@@ -120,8 +119,8 @@
     <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-10 mt-16" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <!-- LOGO DO CLIENTE NO RODAPÉ -->
-                <img src="Logotipo para empresa de representações simples em branco e preto.png" alt="Logotipo Arena Inclusiva no rodapé" class="w-10 h-10 rounded-full object-contain bg-white p-1">
+                <!-- LOGO NO RODAPÉ -->
+                <img src="images/logo-arena.svg" alt="Logotipo Arena Inclusiva no rodapé" class="w-10 h-10 rounded-full object-cover bg-white">
                 <span class="font-bold text-slate-800 dark:text-white">ONG Arena Inclusiva — 2026</span>
             </div>
             <div class="flex gap-4 flex-wrap justify-center">
@@ -136,25 +135,72 @@
 
     <script>
         // ============================================================================
-        // DADOS REAIS DE ESPORTES E PRODUTOS
+        // DADOS REAIS DE ESPORTES E PRODUTOS (MAIS ITENS + LINKS EXTERNOS + IMAGENS LOCAIS)
         // ============================================================================
         const SPORTS = [
-            { id: 'basquete', name: 'Basquete CR', category: 'Coletivo', disability: ['fisica'], disabilityLabel: 'Física', image: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&q=80&w=800', alt: 'Atletas disputando partida de basquete em cadeira de rodas em quadra coberta', shortDesc: 'Disputado em quadra com cadeiras de rodas adaptadas.' },
-            { id: 'volei', name: 'Vôlei Sentado', category: 'Coletivo', disability: ['fisica', 'multipla'], disabilityLabel: 'Física/Múltipla', image: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800', alt: 'Jogadoras de vôlei sentado comemorando ponto em quadra oficial', shortDesc: 'Jogo rápido praticado com atletas sentados.' },
-            { id: 'goalball', name: 'Goalball', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800', alt: 'Atleta com venda nos olhos defendendo arremesso de goalball em quadra tátil', shortDesc: 'Esporte criado para pessoas cegas, com bola sonora.' },
-            { id: 'futebol5', name: 'Futebol de 5', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=800', alt: 'Partida de futebol de 5 adaptado com jogadores usando vendas', shortDesc: 'Futebol adaptado com guizos na bola.' },
-            { id: 'bocha', name: 'Bocha', category: 'Individual', disability: ['fisica', 'multipla'], disabilityLabel: 'Física Severa', image: 'https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?auto=format&fit=crop&q=80&w=800', alt: 'Atleta concentrado jogando bocha paralímpica com calha direcional', shortDesc: 'Esporte de precisão e estratégia para paralisia cerebral.' },
-            { id: 'atletismo', name: 'Atletismo', category: 'Individual', disability: ['fisica', 'visual', 'intelectual'], disabilityLabel: 'Diversas', image: 'https://images.unsplash.com/photo-1574314983057-0dbec3be05a3?auto=format&fit=crop&q=80&w=800', alt: 'Atleta paralímpico correndo em pista de atletismo com prótese de fibra de carbono', shortDesc: 'Provas de corrida, saltos e arremessos adaptados.' }
+            { id: 'basquete', name: 'Basquete CR', category: 'Coletivo', disability: ['fisica'], disabilityLabel: 'Física', image: 'images/basquete.svg', alt: 'Atletas disputando partida de basquete em cadeira de rodas em quadra coberta', shortDesc: 'Disputado em quadra com cadeiras de rodas adaptadas.' },
+            { id: 'volei', name: 'Vôlei Sentado', category: 'Coletivo', disability: ['fisica', 'multipla'], disabilityLabel: 'Física/Múltipla', image: 'images/volei.svg', alt: 'Jogadoras de vôlei sentado comemorando ponto em quadra oficial', shortDesc: 'Jogo rápido praticado com atletas sentados.' },
+            { id: 'goalball', name: 'Goalball', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'images/goalball.svg', alt: 'Atleta com venda nos olhos defendendo arremesso de goalball em quadra tátil', shortDesc: 'Esporte criado para pessoas cegas, com bola sonora.' },
+            { id: 'futebol5', name: 'Futebol de 5', category: 'Coletivo', disability: ['visual'], disabilityLabel: 'Visual', image: 'images/futebol5.svg', alt: 'Partida de futebol de 5 adaptado com jogadores usando vendas', shortDesc: 'Futebol adaptado com guizos na bola.' },
+            { id: 'bocha', name: 'Bocha', category: 'Individual', disability: ['fisica', 'multipla'], disabilityLabel: 'Física Severa', image: 'images/bocha.svg', alt: 'Atleta concentrado jogando bocha paralímpica com calha direcional', shortDesc: 'Esporte de precisão e estratégia para paralisia cerebral.' },
+            { id: 'atletismo', name: 'Atletismo', category: 'Individual', disability: ['fisica', 'visual', 'intelectual'], disabilityLabel: 'Diversas', image: 'images/atletismo.svg', alt: 'Atleta paralímpico correndo em pista de atletismo com prótese de fibra de carbono', shortDesc: 'Provas de corrida, saltos e arremessos adaptados.' }
         ];
 
         const STORE_PRODUCTS = [
-            { id: 'prod-1', sport: 'Basquete em Cadeira de Rodas', name: 'Cadeira de Rodas Esportiva Monobloco em Alumínio', price: 'R$ 4.890,00', image: 'https://images.unsplash.com/photo-1563816650965-7281eb2be289?q=80&w=600&auto=format&fit=crop', alt: 'Atleta utilizando cadeira de rodas esportiva em quadra' },
-            { id: 'prod-2', sport: 'Basquete em Cadeira de Rodas', name: 'Luvas de Propulsão de Alta Aderência (Meio Dedo)', price: 'R$ 180,00', image: 'https://images.unsplash.com/photo-1515523110800-9415d13b84a8?q=80&w=600&auto=format&fit=crop', alt: 'Luvas esportivas resistentes' },
-            { id: 'prod-3', sport: 'Goalball & Futebol de 5 (Cegos)', name: 'Bola Oficial com Guizos Internos (Tamanho Adulto)', price: 'R$ 350,00', image: 'https://images.unsplash.com/photo-1614632537190-23e4146777db?q=80&w=600&auto=format&fit=crop', alt: 'Bola de futebol texturizada' },
-            { id: 'prod-4', sport: 'Goalball & Futebol de 5 (Cegos)', name: 'Óculos de Venda (Tapa-olhos) Oficiais em Neoprene', price: 'R$ 95,00', image: 'https://images.unsplash.com/photo-1582254465498-6bc70419b607?q=80&w=600&auto=format&fit=crop', alt: 'Venda esportiva para os olhos' },
-            { id: 'prod-5', sport: 'Bocha Paralímpica', name: 'Kit Profissional de Bolas de Bocha (Couro Sintético - 6 azuis, 6 vermelhas, 1 branca)', price: 'R$ 2.450,00', image: 'https://images.unsplash.com/photo-1541252260730-0412e8e2108e?q=80&w=600&auto=format&fit=crop', alt: 'Bolas coloridas esportivas' },
-            { id: 'prod-6', sport: 'Bocha Paralímpica', name: 'Calha / Rampa Articulada para Lançamento', price: 'R$ 1.290,00', image: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=600&auto=format&fit=crop', alt: 'Equipamento de rampa para bocha' },
-            { id: 'prod-7', sport: 'Atletismo Paralímpico', name: 'Prótese de Fibra de Carbono (Lâmina de Corrida)', price: 'R$ 12.500,00', image: 'https://images.unsplash.com/photo-1574314983057-0dbec3be05a3?q=80&w=600&auto=format&fit=crop', alt: 'Prótese de perna para corrida em pista' }
+            { 
+                id: 'prod-1', sport: 'Basquete CR', name: 'Cadeira de Rodas Esportiva Monobloco (Alumínio)', price: 'A partir de R$ 4.890,00', 
+                image: 'images/prod-1.svg', 
+                alt: 'Cadeira de rodas esportiva em quadra',
+                link: 'https://lista.mercadolivre.com.br/cadeira-de-rodas-esportiva' 
+            },
+            { 
+                id: 'prod-2', sport: 'Rugby CR', name: 'Cadeira de Rodas de Choque (Rugby Adaptado)', price: 'A partir de R$ 7.500,00', 
+                image: 'images/prod-2.svg', 
+                alt: 'Atleta em cadeira de rodas robusta',
+                link: 'https://lista.mercadolivre.com.br/cadeira-rugby-paralimpico' 
+            },
+            { 
+                id: 'prod-3', sport: 'Uso Geral', name: 'Luvas de Propulsão de Alta Aderência (Meio Dedo)', price: 'A partir de R$ 120,00', 
+                image: 'images/prod-3.svg', 
+                alt: 'Luvas esportivas resistentes',
+                link: 'https://lista.mercadolivre.com.br/luva-cadeirante-propulsao' 
+            },
+            { 
+                id: 'prod-4', sport: 'Goalball / Fut 5', name: 'Bola Oficial com Guizos Internos', price: 'A partir de R$ 350,00', 
+                image: 'images/prod-4.svg', 
+                alt: 'Bola texturizada esportiva',
+                link: 'https://lista.mercadolivre.com.br/bola-goalball-guizo' 
+            },
+            { 
+                id: 'prod-5', sport: 'Goalball / Fut 5', name: 'Óculos de Venda (Tapa-olhos) em Neoprene', price: 'A partir de R$ 85,00', 
+                image: 'images/prod-5.svg', 
+                alt: 'Venda preta para esportes vendados',
+                link: 'https://lista.mercadolivre.com.br/venda-goalball-futebol-cego' 
+            },
+            { 
+                id: 'prod-6', sport: 'Bocha', name: 'Kit Profissional de Bolas de Bocha (Couro)', price: 'A partir de R$ 1.850,00', 
+                image: 'images/prod-6.svg', 
+                alt: 'Bolas coloridas para precisão',
+                link: 'https://lista.mercadolivre.com.br/kit-bocha-paralimpica-couro' 
+            },
+            { 
+                id: 'prod-7', sport: 'Bocha', name: 'Calha / Rampa Articulada para Lançamento', price: 'A partir de R$ 1.290,00', 
+                image: 'images/prod-7.svg', 
+                alt: 'Estrutura de rampa de madeira',
+                link: 'https://lista.mercadolivre.com.br/calha-rampa-bocha-paralimpica' 
+            },
+            { 
+                id: 'prod-8', sport: 'Atletismo', name: 'Prótese de Fibra de Carbono (Lâmina de Corrida)', price: 'Sob Consulta Especializada', 
+                image: 'images/prod-8.svg', 
+                alt: 'Lâmina de fibra de carbono para atletismo',
+                link: 'https://lista.mercadolivre.com.br/protese-esportiva-fibra-carbono' 
+            },
+            { 
+                id: 'prod-9', sport: 'Tênis de Mesa', name: 'Raquete Adaptada com Faixa de Fixação', price: 'A partir de R$ 190,00', 
+                image: 'images/prod-9.svg', 
+                alt: 'Raquete de tênis de mesa',
+                link: 'https://lista.mercadolivre.com.br/raquete-tenis-mesa-adaptada-faixa' 
+            }
         ];
 
         const CHAMPIONSHIPS = [
@@ -166,7 +212,7 @@
         ];
 
         // ============================================================================
-        // GERENCIAMENTO DE ROTAS, SPA E ESTADO
+        // GERENCIAMENTO DE ROTAS E ESTADO
         // ============================================================================
         function loadStoredUser() {
             const raw = localStorage.getItem('arena_user');
@@ -176,7 +222,6 @@
         let state = {
             route: 'home',
             user: loadStoredUser(),
-            cart: JSON.parse(localStorage.getItem('arena_cart')) || [],
             fontSize: parseInt(localStorage.getItem('arena_font')) || 16,
             darkMode: localStorage.getItem('arena_dark') === 'true',
             highContrast: localStorage.getItem('arena_contrast') === 'true',
@@ -206,7 +251,6 @@
             
             const btnClass = (r) => `text-xs xl:text-sm font-semibold px-2 py-1 rounded focus-visible:ring-4 focus-visible:ring-blue-500 transition ${state.route === r ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-slate-600 dark:text-slate-300 hover:text-blue-600'}`;
 
-            // Botões que aparecem independente de estar logado
             let links = `
                 <button onclick="navigate('home')" class="${btnClass('home')}">Início</button>
                 <button onclick="navigate('about')" class="${btnClass('about')}">Sobre</button>
@@ -218,7 +262,6 @@
                 <button onclick="navigate('donate')" class="${btnClass('donate')}">Doar</button>
             `;
 
-            // LÓGICA DO MENU: Esconder Entrar/Cadastro se o usuário estiver logado
             if (state.user) {
                 links += `
                     <button onclick="navigate('recommendations')" class="${btnClass('recommendations')}">Questionário / Recomendações</button>
@@ -282,7 +325,6 @@
         function validateRegister(e) {
             e.preventDefault();
             let valid = true;
-            
             const name = document.getElementById('reg-name').value.trim();
             const email = document.getElementById('reg-email').value.trim();
             const type = document.getElementById('reg-type').value;
@@ -340,7 +382,6 @@
         }
 
         function viewHome() {
-            // LÓGICA DO BOTÃO DA PÁGINA INICIAL: Se estiver logado, altera o botão "Criar Conta" para "Acessar Meu Perfil"
             const callToActionButton = state.user 
                 ? `<button aria-label="Acessar Meu Perfil" onclick="navigate('profile')" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/30 focus-visible:ring-4 focus-visible:ring-yellow-400 transition-transform transform hover:-translate-y-1">Acessar Meu Perfil</button>`
                 : `<button aria-label="Botão Faça Parte do Projeto" onclick="navigate('register')" class="px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg shadow-xl shadow-blue-600/30 focus-visible:ring-4 focus-visible:ring-yellow-400 transition-transform transform hover:-translate-y-1">Criar Conta Gratuita</button>`;
@@ -383,12 +424,41 @@
         function viewAbout() {
             return `
                 <div class="max-w-5xl mx-auto px-4 py-12">
-                    <h1 class="text-4xl font-extrabold mb-6">Sobre a ONG Arena Inclusiva</h1>
-                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-6">Nascemos em 2026 como um projeto do curso Superior de Informática da UNICID. Nossa meta é criar uma ponte tecnológica entre atletas paralímpicos, entusiastas e federações.</p>
-                    <p class="text-lg text-slate-600 dark:text-slate-400 mb-10">Oferecemos catálogo de equipamentos na Loja Inclusiva, divulgação rigorosa de competições e suporte humanizado.</p>
-                    <h2 class="text-2xl font-bold mb-4">O Poder do Esporte Paralímpico</h2>
-                    <div class="w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-black">
-                        <iframe style="width:100%; height:500px;" src="https://youtu.be/5FvTEICsUdc?si=H6ICznC2tLJRPvL-" title="Vídeo Inspiracional - Comitê Paralímpico Brasileiro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="text-center mb-12">
+                        <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider mb-4">A Nossa História</span>
+                        <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">Sobre a ONG Arena Inclusiva</h1>
+                        <p class="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">Nascemos em 2026 como um projeto acadêmico da UNICID. A nossa meta é criar uma ponte tecnológica entre atletas paralímpicos, familiares, voluntários e federações, democratizando o acesso ao esporte adaptado.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                        <div>
+                            <h2 class="text-3xl font-bold mb-4 text-slate-900 dark:text-white">A Nossa Missão</h2>
+                            <p class="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Acreditamos que o esporte é um direito universal. A nossa plataforma quebra barreiras físicas e sociais ao oferecer tecnologia de recomendação, acesso a equipamentos especializados através da nossa Loja Inclusiva e uma agenda rigorosa de competições para inspirar novos atletas.</p>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-teal-500 shrink-0 mt-0.5"></i>
+                                    <span class="text-slate-700 dark:text-slate-300"><strong>Inclusão pela Tecnologia:</strong> Algoritmos que conectam você ao esporte ideal.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-teal-500 shrink-0 mt-0.5"></i>
+                                    <span class="text-slate-700 dark:text-slate-300"><strong>Equipamentos Acessíveis:</strong> E-commerce redirecionado focando em alta performance adaptada.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i data-lucide="check-circle-2" class="w-6 h-6 text-teal-500 shrink-0 mt-0.5"></i>
+                                    <span class="text-slate-700 dark:text-slate-300"><strong>Comunidade:</strong> Um espaço seguro para atletas PCD, familiares e apoiadores.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-inner">
+                            <i data-lucide="quote" class="w-12 h-12 text-blue-500/30 mb-4"></i>
+                            <p class="text-2xl font-bold text-slate-800 dark:text-white italic mb-4">"O limite não está no corpo, mas sim na falta de oportunidades e adaptação."</p>
+                            <p class="text-sm font-bold text-slate-500 uppercase tracking-wider">— Manifesto Arena Inclusiva</p>
+                        </div>
+                    </div>
+
+                    <h2 class="text-2xl font-bold mb-6 text-center text-slate-900 dark:text-white">O Poder do Esporte Paralímpico</h2>
+                    <div class="w-full rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 bg-black relative pt-[56.25%]">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/S2_x1QdE4mY" title="Vídeo Inspiracional - Comitê Paralímpico Brasileiro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
             `;
@@ -439,18 +509,17 @@
             `;
         }
 
+        // ============================================================================
+        // LOJA INCLUSIVA ATUALIZADA (9 Produtos + Links Externos)
+        // ============================================================================
         function viewStore() {
             return `
                 <div class="max-w-7xl mx-auto px-4 py-12">
-                    <div class="bg-gradient-to-r from-teal-600 to-blue-600 rounded-3xl p-8 text-white shadow-xl mb-10 text-center md:text-left flex flex-col md:flex-row justify-between items-center">
-                        <div>
-                            <span class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase">E-commerce Acessível</span>
-                            <h1 class="text-3xl md:text-4xl font-extrabold mt-3">Loja Inclusiva</h1>
-                            <p class="text-teal-50 mt-2 max-w-2xl">Adquira equipamentos, próteses, bolas sonoras e acessórios homologados para esportes adaptados. Parte da renda financia novos atletas.</p>
-                        </div>
-                        <div class="mt-4 md:mt-0 bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 text-center">
-                            <span class="block text-2xl font-black" id="cart-count">${state.cart.length}</span>
-                            <span class="text-xs uppercase tracking-wider font-bold text-teal-100">Itens no Carrinho</span>
+                    <div class="bg-gradient-to-r from-teal-600 to-blue-600 rounded-3xl p-8 text-white shadow-xl mb-10 text-center md:text-left flex flex-col justify-between items-center md:flex-row">
+                        <div class="w-full">
+                            <span class="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase">Parceria com Fornecedores</span>
+                            <h1 class="text-3xl md:text-4xl font-extrabold mt-3">Loja Inclusiva Recomendada</h1>
+                            <p class="text-teal-50 mt-2 max-w-2xl">Pesquisamos os melhores equipamentos homologados e direcionamos você diretamente para a compra segura no Mercado Livre ou em lojas especializadas.</p>
                         </div>
                     </div>
 
@@ -466,8 +535,8 @@
                                         <h3 class="text-lg font-bold mb-2 text-slate-900 dark:text-white">${p.name}</h3>
                                         <p class="text-2xl font-extrabold text-blue-600 dark:text-blue-400 mb-4">${p.price}</p>
                                     </div>
-                                    <button aria-label="Comprar ${p.name}, valor ${p.price}" onclick="addToCart('${p.id}')" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition focus-visible:ring-4 focus-visible:ring-yellow-400 flex items-center justify-center gap-2">
-                                        <i data-lucide="shopping-cart" aria-hidden="true" class="w-4 h-4"></i> Comprar
+                                    <button aria-label="Comprar ${p.name} no site externo" onclick="window.open('${p.link}', '_blank')" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition focus-visible:ring-4 focus-visible:ring-yellow-400 flex items-center justify-center gap-2">
+                                        <i data-lucide="external-link" aria-hidden="true" class="w-4 h-4"></i> Comprar no Site Externo
                                     </button>
                                 </div>
                             </article>
@@ -475,17 +544,6 @@
                     </div>
                 </div>
             `;
-        }
-
-        function addToCart(productId) {
-            const prod = STORE_PRODUCTS.find(p => p.id === productId);
-            if (!prod) return;
-            state.cart.push(prod);
-            localStorage.setItem('arena_cart', JSON.stringify(state.cart));
-            const countEl = document.getElementById('cart-count');
-            if (countEl) countEl.textContent = state.cart.length;
-            alert(`"${prod.name}" foi adicionado ao seu carrinho com sucesso!`);
-            announceToScreenReader(`${prod.name} adicionado ao carrinho.`);
         }
 
         function viewChampionships() {
@@ -594,7 +652,7 @@
                     <div class="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl">
                         <div class="text-center mb-6">
                             <h2 class="text-2xl font-extrabold mb-2">Criar Conta Gratuita</h2>
-                            <p class="text-slate-600 dark:text-slate-400 text-sm">O cadastro é 100% gratuito. Você só utiliza dinheiro se quiser fazer doações ou comprar na loja.</p>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">O cadastro é 100% gratuito. Você só utiliza dinheiro se quiser fazer doações ou comprar na loja externa.</p>
                         </div>
                         <form onsubmit="validateRegister(event)" novalidate class="space-y-4">
                             <div>
@@ -633,7 +691,7 @@
         }
 
         // ============================================================================
-        // SISTEMA DE QUESTIONÁRIO INTELIGENTE
+        // QUESTIONÁRIO INTELIGENTE
         // ============================================================================
         function viewRecommendations() {
             if (state.quiz.step === 0) {
@@ -646,7 +704,6 @@
                     </div>
                 `;
             }
-            
             if (state.quiz.step === 1) {
                 return `
                     <div class="max-w-3xl mx-auto px-4 py-16 text-center">
@@ -662,7 +719,6 @@
                     </div>
                 `;
             }
-
             if (state.quiz.step === 2) {
                 return `
                     <div class="max-w-3xl mx-auto px-4 py-16 text-center">
@@ -683,17 +739,13 @@
                     </div>
                 `;
             }
-
             if (state.quiz.step === 3) {
                 let filtrados = SPORTS.filter(s => {
                     const matchDef = (state.quiz.deficiencia === 'nenhuma') || s.disability.includes(state.quiz.deficiencia);
                     const matchCat = s.category === state.quiz.categoria;
                     return matchDef && matchCat;
                 });
-
-                if (filtrados.length === 0) {
-                    filtrados = SPORTS.filter(s => s.disability.includes(state.quiz.deficiencia) || state.quiz.deficiencia === 'nenhuma').slice(0, 2);
-                }
+                if (filtrados.length === 0) filtrados = SPORTS.filter(s => s.disability.includes(state.quiz.deficiencia) || state.quiz.deficiencia === 'nenhuma').slice(0, 2);
                 if (filtrados.length === 0) filtrados = SPORTS.slice(0, 2);
 
                 return `
@@ -711,9 +763,9 @@
             }
         }
 
-        function startQuiz() { state.quiz.step = 1; renderMain(); announceToScreenReader("Etapa 1 de 2: Qual o seu tipo de deficiência?"); lucide.createIcons(); }
-        function setQuizDeficiencia(val) { state.quiz.deficiencia = val; state.quiz.step = 2; renderMain(); announceToScreenReader("Etapa 2 de 2: Você prefere esportes individuais ou coletivos?"); lucide.createIcons(); }
-        function setQuizCategoria(val) { state.quiz.categoria = val; state.quiz.step = 3; renderMain(); announceToScreenReader("Análise concluída. Exibindo resultados recomendados para você."); lucide.createIcons(); }
+        function startQuiz() { state.quiz.step = 1; renderMain(); announceToScreenReader("Etapa 1 de 2"); lucide.createIcons(); }
+        function setQuizDeficiencia(val) { state.quiz.deficiencia = val; state.quiz.step = 2; renderMain(); announceToScreenReader("Etapa 2 de 2"); lucide.createIcons(); }
+        function setQuizCategoria(val) { state.quiz.categoria = val; state.quiz.step = 3; renderMain(); announceToScreenReader("Análise concluída"); lucide.createIcons(); }
         function restartQuiz() { state.quiz.step = 0; renderMain(); lucide.createIcons(); }
 
         function viewSportCardHTML(sport, score) {
@@ -722,15 +774,17 @@
                     <img src="${sport.image}" alt="${sport.alt}" class="w-full h-40 object-cover rounded-xl mb-4 bg-slate-200">
                     <h3 class="text-xl font-extrabold mb-2">${sport.name}</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 mb-4 flex-grow">${sport.shortDesc}</p>
-                    <div class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 text-xs font-bold rounded-lg mb-4">Compatibilidade com seu perfil: ${score}%</div>
+                    <div class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 text-xs font-bold rounded-lg mb-4">Compatibilidade: ${score}%</div>
                     <button aria-label="Saiba mais sobre ${sport.name}" onclick="openSportModal('${sport.id}')" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl transition focus-visible:ring-4 focus-visible:ring-yellow-400">Ver Detalhes</button>
                 </article>
             `;
         }
 
+        // ============================================================================
+        // PERFIL LIMPO (COMPRAS AGORA SÃO EXTERNAS)
+        // ============================================================================
         function viewProfile() {
             const u = state.user;
-            const myCart = state.cart;
             return `
                 <div class="max-w-5xl mx-auto px-4 py-12">
                     <div class="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-700 shadow-sm mb-8 flex justify-between items-center flex-wrap gap-4">
@@ -740,24 +794,13 @@
                         </div>
                         <button onclick="logout()" class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-bold rounded-xl text-sm transition focus-visible:ring-4 focus-visible:ring-red-500">Sair da Conta</button>
                     </div>
-
-                    <h2 class="text-2xl font-extrabold mb-4">Meus Pedidos na Loja Inclusiva (${myCart.length})</h2>
-                    ${myCart.length > 0 ? `
-                        <div class="space-y-4">
-                            ${myCart.map(item => `
-                                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 flex justify-between items-center">
-                                    <div class="flex items-center gap-4">
-                                        <img src="${item.image}" alt="${item.alt}" class="w-16 h-16 object-cover rounded-lg">
-                                        <div>
-                                            <h4 class="font-bold">${item.name}</h4>
-                                            <span class="text-sm text-blue-600 font-bold">${item.price}</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-xs font-bold px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full">Pedido Confirmado</span>
-                                </div>
-                            `).join('')}
-                        </div>
-                    ` : `<p class="text-slate-500 p-6 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl text-center">Nenhum produto adquirido na Loja Inclusiva até o momento.</p>`}
+                    
+                    <div class="bg-blue-50 dark:bg-blue-900/30 p-8 rounded-3xl border border-blue-100 dark:border-blue-800">
+                        <i data-lucide="info" class="w-8 h-8 text-blue-500 mb-3"></i>
+                        <h2 class="text-xl font-bold mb-2 text-blue-900 dark:text-blue-100">Lembre-se de utilizar nosso Recomendador!</h2>
+                        <p class="text-blue-700 dark:text-blue-300 text-sm">Na aba "Recomendações", responda ao nosso questionário para que a nossa IA lhe indique a melhor modalidade com base no seu perfil.</p>
+                        <button onclick="navigate('recommendations')" class="mt-4 px-6 py-2 bg-blue-600 text-white font-bold rounded-xl text-sm hover:bg-blue-700 transition">Acessar Questionário</button>
+                    </div>
                 </div>
             `;
         }
@@ -836,7 +879,6 @@
             const target = e.target.closest('button, a, h1, h2, h3, h4, p, label, img, input, textarea, select, span, article');
             if (!target || target === lastHoveredElement) return;
             lastHoveredElement = target;
-
             let txt = target.getAttribute('aria-label') || target.alt || target.title;
             if (!txt) {
                 if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) {
@@ -885,3 +927,4 @@
     </script>
 </body>
 </html>
+
